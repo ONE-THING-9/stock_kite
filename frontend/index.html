@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Trading Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.plot.ly/plotly-2.26.0.min.js" charset="utf-8"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-left">
+                <button id="loginBtn" class="login-btn">Login to Kite</button>
+                <h1>Stock Trading Dashboard</h1>
+            </div>
+            <div class="auth-status" id="authStatus">
+                <span class="status-indicator" id="statusIndicator"></span>
+                <span id="statusText">Checking connection...</span>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="controls-panel">
+                    <h3>Stock Selection</h3>
+                    <div class="input-group">
+                        <label for="stockSymbol">Stock Symbol:</label>
+                        <input type="text" id="stockSymbol" placeholder="e.g., TCS" value="TCS">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="timeframe">Timeframe:</label>
+                        <select id="timeframe">
+                            <option value="1minute">1 Minute</option>
+                            <option value="5minute">5 Minutes</option>
+                            <option value="15minute">15 Minutes</option>
+                            <option value="30minute">30 Minutes</option>
+                            <option value="1hour">1 Hour</option>
+                            <option value="1day" selected>1 Day</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="days">Days:</label>
+                        <input type="number" id="days" value="100" min="30" max="365">
+                    </div>
+
+                    <button id="loadData" class="load-btn">Load Data</button>
+                </div>
+
+                <div class="indicators-panel">
+                    <h3>Technical Indicators</h3>
+                    <div class="indicator-list" id="indicatorList">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-area">
+                <div class="chart-header">
+                    <h2 id="chartTitle">Select a stock to view chart</h2>
+                    <div class="chart-info">
+                        <span id="currentPrice">--</span>
+                        <span id="priceChange" class="change">--</span>
+                    </div>
+                </div>
+
+                <div class="chart-controls">
+                    <div class="indicator-toggles">
+                        <label class="indicator-toggle">
+                            <input type="checkbox" id="showSMA20" value="SMA_20">
+                            <span class="checkmark"></span>
+                            SMA(20)
+                        </label>
+                        <label class="indicator-toggle">
+                            <input type="checkbox" id="showSMA50" value="SMA_50">
+                            <span class="checkmark"></span>
+                            SMA(50)
+                        </label>
+                        <label class="indicator-toggle">
+                            <input type="checkbox" id="showEMA20" value="EMA_20">
+                            <span class="checkmark"></span>
+                            EMA(20)
+                        </label>
+                        <label class="indicator-toggle">
+                            <input type="checkbox" id="showEMA50" value="EMA_50">
+                            <span class="checkmark"></span>
+                            EMA(50)
+                        </label>
+                        <label class="indicator-toggle">
+                            <input type="checkbox" id="showBB" value="BollingerBands">
+                            <span class="checkmark"></span>
+                            Bollinger Bands
+                        </label>
+                        <label class="indicator-toggle">
+                            <input type="checkbox" id="showVWAP" value="VWAP">
+                            <span class="checkmark"></span>
+                            VWAP
+                        </label>
+                    </div>
+                    
+                    <div class="oscillator-section">
+                        <h4>Oscillators</h4>
+                        <label class="indicator-toggle">
+                            <input type="checkbox" id="showRSI" value="RSI">
+                            <span class="checkmark"></span>
+                            RSI
+                        </label>
+                        <label class="indicator-toggle">
+                            <input type="checkbox" id="showMACD" value="MACD">
+                            <span class="checkmark"></span>
+                            MACD
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <div id="candlestickChart"></div>
+                </div>
+
+                <div class="analysis-panel">
+                    <div class="analysis-section">
+                        <h3>Technical Analysis Summary</h3>
+                        <div id="analysisSummary">
+                            <p>Load data to see technical analysis</p>
+                        </div>
+                    </div>
+
+                    <div class="analysis-section">
+                        <h3>Key Indicators</h3>
+                        <div class="indicators-grid" id="indicatorsGrid">
+                            <!-- Will be populated with indicator values -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p>Loading data...</p>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Kite Connect Authentication</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="login-step" id="step1">
+                    <p>To access live market data and place trades, you need to authenticate with Kite Connect.</p>
+                    <button id="getLoginUrl" class="modal-btn primary">Get Login URL</button>
+                </div>
+                
+                <div class="login-step" id="step2" style="display: none;">
+                    <p>Click the button below to open Kite Connect login page:</p>
+                    <button id="openKiteLogin" class="modal-btn primary">Open Kite Login</button>
+                    <p class="step-note">After logging in, you'll be redirected back. Copy the request token from the URL.</p>
+                </div>
+                
+                <div class="login-step" id="step3" style="display: none;">
+                    <p>Enter the request token from the redirected URL:</p>
+                    <div class="input-group">
+                        <label for="requestToken">Request Token:</label>
+                        <input type="text" id="requestToken" placeholder="Enter request token here">
+                    </div>
+                    <button id="submitToken" class="modal-btn primary">Complete Login</button>
+                </div>
+                
+                <div class="login-step" id="step4" style="display: none;">
+                    <div class="success-message">
+                        <p>✅ Authentication successful!</p>
+                        <p>You can now access live market data.</p>
+                    </div>
+                </div>
+                
+                <div class="login-step" id="stepError" style="display: none;">
+                    <div class="error-message">
+                        <p>❌ Authentication failed</p>
+                        <p id="errorText"></p>
+                        <button id="retryLogin" class="modal-btn secondary">Retry</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js?v=1754719582"></script>
+</body>
+</html>

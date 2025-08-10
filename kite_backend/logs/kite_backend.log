@@ -1,0 +1,751 @@
+2025-08-07 17:48:14,225 - main - INFO - Starting Kite Backend API
+2025-08-07 17:48:14,225 - main - INFO - No access token found. Manual authentication required.
+2025-08-07 17:51:30,056 - main - INFO - Shutting down Kite Backend API
+2025-08-07 17:51:31,153 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 17:51:31,199 - main - INFO - Starting Kite Backend API
+2025-08-07 17:51:31,200 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 17:51:31,200 - main - INFO - No access token found. Manual authentication required.
+2025-08-07 17:51:35,948 - main - INFO - Shutting down Kite Backend API
+2025-08-07 17:51:36,667 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 17:51:36,747 - main - INFO - Starting Kite Backend API
+2025-08-07 17:51:36,747 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 17:51:36,747 - main - INFO - No access token found. Manual authentication required.
+2025-08-07 17:51:40,182 - main - INFO - Shutting down Kite Backend API
+2025-08-07 17:51:40,753 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 17:51:40,789 - main - INFO - Starting Kite Backend API
+2025-08-07 17:51:40,790 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 17:51:40,790 - main - INFO - No access token found. Manual authentication required.
+2025-08-07 17:51:46,853 - main - INFO - Shutting down Kite Backend API
+2025-08-07 17:51:47,433 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 17:51:47,465 - main - INFO - Starting Kite Backend API
+2025-08-07 17:51:47,465 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 17:51:47,465 - main - INFO - No access token found. Manual authentication required.
+2025-08-07 17:51:53,120 - main - INFO - Shutting down Kite Backend API
+2025-08-07 17:51:53,907 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 17:51:53,943 - main - INFO - Starting Kite Backend API
+2025-08-07 17:51:53,944 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 17:51:53,944 - main - INFO - No access token found. Manual authentication required.
+2025-08-07 17:51:57,380 - main - INFO - Shutting down Kite Backend API
+2025-08-07 17:51:58,011 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 17:51:58,047 - main - INFO - Starting Kite Backend API
+2025-08-07 17:51:58,048 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 17:51:58,048 - main - INFO - No access token found. Manual authentication required.
+2025-08-07 17:53:47,558 - routers.auth - INFO - Login URL request
+2025-08-07 17:53:47,561 - services.auth_service - INFO - Login URL generated successfully
+2025-08-07 17:54:27,723 - main - INFO - Shutting down Kite Backend API
+2025-08-07 17:54:29,865 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 17:54:30,211 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 17:54:30,258 - main - INFO - Starting Kite Backend API
+2025-08-07 17:54:30,258 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 17:54:30,258 - main - INFO - No access token found. Manual authentication required.
+2025-08-07 17:54:37,675 - routers.auth - INFO - Login URL request
+2025-08-07 17:54:37,676 - services.auth_service - INFO - Login URL generated successfully
+2025-08-07 17:55:26,542 - routers.auth - INFO - Authentication attempt with request token
+2025-08-07 17:55:27,314 - services.auth_service - INFO - Authentication successful for user: MJ3002
+2025-08-07 17:55:50,216 - services.auth_service - INFO - Initialized with access token for user: MJ3002
+2025-08-07 17:59:02,135 - routers.historical_data - INFO - Historical data request for TCS, 5minute, 2025-07-01 to 2025-07-02
+2025-08-07 17:59:03,869 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-07-01 to 2025-07-02 with timeframe 5minute
+2025-08-07 17:59:04,019 - services.historical_data_service - INFO - Successfully fetched 150 records for TCS
+2025-08-07 17:59:26,436 - routers.metadata - INFO - Metadata request for TCS
+2025-08-07 17:59:26,441 - services.metadata_service - INFO - Loading instruments data from Kite Connect
+2025-08-07 17:59:27,786 - services.metadata_service - INFO - Loaded 88028 instruments
+2025-08-07 17:59:27,788 - services.metadata_service - INFO - Found metadata for TCS: TCS
+2025-08-07 18:00:02,247 - routers.live_data - INFO - Live data request for TCS
+2025-08-07 18:00:03,624 - services.live_data_service - INFO - Fetching live data for TCS (136330244)
+2025-08-07 18:00:03,760 - services.live_data_service - INFO - Successfully fetched live data for TCS: LTP=3047.15, Volume=88044
+2025-08-07 18:07:17,597 - main - INFO - Shutting down Kite Backend API
+2025-08-07 18:07:18,542 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 18:07:18,589 - main - INFO - Starting Kite Backend API
+2025-08-07 18:07:18,589 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 18:07:18,589 - main - INFO - No access token found. Manual authentication required.
+2025-08-07 18:07:58,122 - main - INFO - Shutting down Kite Backend API
+2025-08-07 18:07:58,828 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 18:07:58,863 - main - INFO - Starting Kite Backend API
+2025-08-07 18:07:58,863 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 18:07:58,863 - main - INFO - No access token found. Manual authentication required.
+2025-08-07 18:08:17,259 - main - INFO - Shutting down Kite Backend API
+2025-08-07 18:08:17,821 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 18:08:17,855 - main - INFO - Starting Kite Backend API
+2025-08-07 18:08:17,856 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 18:08:17,856 - main - INFO - No access token found. Manual authentication required.
+2025-08-07 18:08:29,485 - main - INFO - Shutting down Kite Backend API
+2025-08-07 18:08:30,047 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 18:08:34,257 - services.auth_service - INFO - KiteConnect instance created
+2025-08-07 18:08:37,940 - services.auth_service - INFO - KiteConnect instance created
+2025-08-08 16:38:20,521 - services.auth_service - INFO - KiteConnect instance created
+2025-08-08 16:38:21,290 - services.auth_service - INFO - KiteConnect instance created
+2025-08-08 16:38:21,655 - main - INFO - Starting Kite Backend API
+2025-08-08 16:38:21,655 - services.auth_service - INFO - KiteConnect instance created
+2025-08-08 16:38:21,656 - main - INFO - No access token found. Manual authentication required.
+2025-08-08 16:38:29,552 - main - INFO - Shutting down Kite Backend API
+2025-08-09 11:12:53,406 - services.auth_service - INFO - KiteConnect instance created
+2025-08-09 11:12:54,214 - services.auth_service - INFO - KiteConnect instance created
+2025-08-09 11:12:54,579 - main - INFO - Starting Kite Backend API
+2025-08-09 11:12:54,579 - services.auth_service - INFO - KiteConnect instance created
+2025-08-09 11:12:54,579 - main - INFO - No access token found. Manual authentication required.
+2025-08-09 11:37:06,469 - routers.auth - INFO - Login URL request
+2025-08-09 11:37:06,480 - services.auth_service - INFO - Login URL generated successfully
+2025-08-09 11:37:34,260 - routers.auth - INFO - Authentication attempt with request token
+2025-08-09 11:37:35,689 - services.auth_service - INFO - Authentication successful for user: MJ3002
+2025-08-09 11:39:51,261 - routers.historical_data - INFO - Historical data request for hdfc, 1minute, 2025-02-25 to 2025-02-26
+2025-08-09 11:39:52,710 - services.historical_data_service - WARNING - Instrument token not found for stock: hdfc
+2025-08-09 11:39:52,729 - services.historical_data_service - ERROR - Error fetching historical data for hdfc: Stock 'hdfc' not found
+2025-08-09 11:39:52,729 - routers.historical_data - ERROR - Validation error for hdfc: Stock 'hdfc' not found
+2025-08-09 11:42:11,650 - routers.historical_data - INFO - Historical data request for HDFC, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 11:42:12,959 - services.historical_data_service - WARNING - Instrument token not found for stock: HDFC
+2025-08-09 11:42:12,972 - services.historical_data_service - ERROR - Error fetching historical data for HDFC: Stock 'HDFC' not found
+2025-08-09 11:42:12,972 - routers.historical_data - ERROR - Validation error for HDFC: Stock 'HDFC' not found
+2025-08-09 11:42:36,517 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 11:42:37,789 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 11:42:37,857 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 11:42:37,866 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 11:42:37,867 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 11:42:39,087 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 11:42:39,157 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 11:42:39,213 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 11:43:41,449 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 11:43:42,723 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 11:43:42,793 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 11:43:42,799 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 11:43:42,800 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 11:43:44,428 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 11:43:44,503 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 11:43:44,512 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 11:44:31,543 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 11:44:32,919 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 11:44:33,021 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 11:44:33,030 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 11:44:33,030 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 11:44:34,307 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 11:44:34,378 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 11:44:34,388 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 11:51:21,273 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 11:51:23,053 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 11:51:23,125 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 11:51:23,134 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 11:51:23,134 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 11:51:24,452 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 11:51:24,523 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 11:51:24,543 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 11:52:02,338 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 11:52:03,687 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 11:52:03,754 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 11:52:03,760 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 11:52:03,760 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 11:52:05,065 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 11:52:05,127 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 11:52:05,135 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 11:55:41,132 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 11:55:42,522 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 11:55:42,594 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 11:55:42,601 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 11:55:42,602 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 11:55:43,911 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 11:55:43,992 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 11:55:44,001 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 11:58:51,090 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 11:58:52,610 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 11:58:52,681 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 11:58:52,689 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 11:58:52,690 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 11:58:54,382 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 11:58:54,445 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 11:58:54,453 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 12:04:44,277 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 12:04:45,689 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 12:04:45,763 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 12:04:45,768 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 12:04:45,768 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 12:04:47,054 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 12:04:47,127 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 12:04:47,136 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 12:06:27,661 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 12:06:29,037 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 12:06:29,110 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 12:06:29,116 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 12:06:29,116 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 12:06:30,408 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 12:06:30,481 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 12:06:30,489 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 12:24:02,942 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 12:24:04,877 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 12:24:04,998 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 12:24:05,006 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 12:24:05,006 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 12:24:06,369 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 12:24:06,485 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 12:24:06,513 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 17:12:16,040 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 17:12:17,601 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:12:17,679 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:12:17,687 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 17:12:17,688 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 17:12:18,969 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:12:19,039 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:12:19,076 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 17:17:49,121 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 17:17:50,466 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:17:50,536 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:17:50,543 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 17:17:50,544 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 17:17:51,897 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:17:51,960 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:17:51,985 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 17:20:16,644 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 17:20:18,028 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:20:18,096 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:20:18,102 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 17:20:18,102 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 17:20:19,353 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:20:19,421 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:20:19,429 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 17:23:27,074 - routers.historical_data - INFO - Historical data request for HDFC, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 17:23:28,395 - services.historical_data_service - WARNING - Instrument token not found for stock: HDFC
+2025-08-09 17:23:28,407 - services.historical_data_service - ERROR - Error fetching historical data for HDFC: Stock 'HDFC' not found
+2025-08-09 17:23:28,407 - routers.historical_data - ERROR - Validation error for HDFC: Stock 'HDFC' not found
+2025-08-09 17:23:34,775 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 17:23:36,084 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:23:36,151 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:23:36,158 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 17:23:36,158 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 17:23:37,415 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:23:37,490 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:23:37,499 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 17:25:23,030 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 17:25:24,445 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:25:24,503 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:25:24,509 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 17:25:24,509 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 17:25:25,938 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:25:26,022 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:25:26,031 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 17:26:37,267 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 17:26:38,614 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:26:38,692 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:26:38,698 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 17:26:38,698 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 17:26:39,974 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:26:40,038 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:26:40,050 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 17:29:23,319 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 17:29:24,644 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:29:24,704 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:29:24,709 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 17:29:24,709 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 17:29:25,977 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:29:26,042 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:29:26,051 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 17:32:31,507 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 17:32:32,808 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:32:32,880 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:32:32,886 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 17:32:32,886 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 17:32:34,168 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:32:34,231 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:32:34,240 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 17:33:32,392 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 17:33:33,743 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:33:33,816 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:33:33,821 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 17:33:33,822 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 17:33:35,111 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:33:35,191 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:33:35,200 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 17:37:33,502 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 17:37:34,801 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:37:34,868 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:37:34,875 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 17:37:34,875 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 17:37:36,139 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:37:36,199 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:37:36,223 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 17:40:46,529 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 17:40:47,904 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:40:47,966 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:40:47,973 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 17:40:47,973 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 17:40:49,297 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:40:49,375 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:40:49,400 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 17:41:06,937 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2024-03-27 to 2025-08-09
+2025-08-09 17:41:08,281 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2024-03-27 to 2025-08-09 with timeframe day
+2025-08-09 17:41:08,363 - services.historical_data_service - INFO - Successfully fetched 341 records for TCS
+2025-08-09 17:43:00,078 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2024-08-09 to 2025-08-09
+2025-08-09 17:43:01,443 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2024-08-09 to 2025-08-09 with timeframe day
+2025-08-09 17:43:01,515 - services.historical_data_service - INFO - Successfully fetched 250 records for TCS
+2025-08-09 17:43:01,521 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 17:43:01,521 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 17:43:02,813 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2024-08-09 to 2025-08-09 with timeframe day
+2025-08-09 17:43:02,888 - services.historical_data_service - INFO - Successfully fetched 250 records for TCS
+2025-08-09 17:43:02,897 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-09 17:55:59,306 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-01 to 2025-08-09
+2025-08-09 17:56:00,808 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:56:00,882 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:56:00,888 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-09 17:56:00,888 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-09 17:56:02,122 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-01 to 2025-08-09 with timeframe day
+2025-08-09 17:56:02,373 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-09 17:56:02,407 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-10 11:23:54,076 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-10 11:23:54,079 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-10 11:23:55,566 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 11:23:55,624 - services.historical_data_service - ERROR - Error fetching historical data for TCS: Incorrect `api_key` or `access_token`.
+2025-08-10 11:23:55,625 - services.technical_analysis_service - ERROR - Error analyzing timeframe 1day: Incorrect `api_key` or `access_token`.
+2025-08-10 11:23:55,625 - services.technical_analysis_service - ERROR - Technical analysis failed for TCS: No successful analysis for any timeframe
+2025-08-10 11:23:55,625 - routers.technical_analysis - ERROR - Validation error for TCS: No successful analysis for any timeframe
+2025-08-10 11:25:30,438 - routers.historical_data - INFO - Historical data request for TCS, 1minute, 2025-02-25 to 2025-02-26
+2025-08-10 11:25:31,713 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-02-25 to 2025-02-26 with timeframe minute
+2025-08-10 11:25:31,780 - services.historical_data_service - ERROR - Error fetching historical data for TCS: Incorrect `api_key` or `access_token`.
+2025-08-10 11:25:31,780 - routers.historical_data - ERROR - Error fetching historical data for TCS: Incorrect `api_key` or `access_token`.
+2025-08-10 11:25:45,957 - main - INFO - Shutting down Kite Backend API
+2025-08-10 11:26:01,623 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 11:26:02,383 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 11:26:02,797 - main - INFO - Starting Kite Backend API
+2025-08-10 11:26:02,798 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 11:26:02,798 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 11:26:07,017 - routers.auth - INFO - Login URL request
+2025-08-10 11:26:07,018 - services.auth_service - INFO - Login URL generated successfully
+2025-08-10 11:28:17,616 - routers.auth - INFO - Authentication attempt with request token
+2025-08-10 11:28:18,078 - services.auth_service - INFO - Authentication successful for user: MJ3002
+2025-08-10 11:28:22,861 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-02 to 2025-08-10
+2025-08-10 11:28:24,231 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 11:28:24,310 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 11:28:24,315 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-10 11:28:24,316 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-10 11:28:25,620 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 11:28:25,685 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 11:28:25,703 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-10 11:29:27,782 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-02 to 2025-08-10
+2025-08-10 11:29:29,103 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 11:29:29,194 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 11:29:29,204 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-10 11:29:29,204 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-10 11:29:30,514 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 11:29:30,585 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 11:29:30,610 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-10 11:37:19,083 - main - INFO - Shutting down Kite Backend API
+2025-08-10 11:37:20,185 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 11:37:20,677 - main - INFO - Starting Kite Backend API
+2025-08-10 11:37:20,677 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 11:37:20,677 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 11:37:44,296 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-02 to 2025-08-10
+2025-08-10 11:37:44,296 - services.historical_data_service - ERROR - Error fetching historical data for TCS: Authentication required. Kite instance not available.
+2025-08-10 11:37:44,297 - routers.historical_data - ERROR - Validation error for TCS: Authentication required. Kite instance not available.
+2025-08-10 11:37:50,015 - routers.auth - INFO - Login URL request
+2025-08-10 11:37:50,015 - services.auth_service - INFO - Login URL generated successfully
+2025-08-10 11:38:19,214 - routers.auth - INFO - Authentication attempt with request token
+2025-08-10 11:38:19,496 - services.auth_service - INFO - Authentication successful for user: MJ3002
+2025-08-10 11:38:25,544 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-02 to 2025-08-10
+2025-08-10 11:38:26,817 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 11:38:26,883 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 11:38:26,888 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-10 11:38:26,889 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-10 11:38:28,114 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 11:38:28,225 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 11:38:28,246 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-10 11:39:06,563 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-02 to 2025-08-10
+2025-08-10 11:39:07,928 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 11:39:08,006 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 11:39:08,012 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-10 11:39:08,012 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-10 11:39:09,257 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 11:39:09,346 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 11:39:09,355 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-10 11:44:01,197 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-02 to 2025-08-10
+2025-08-10 11:44:02,536 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 11:44:02,647 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 11:44:02,652 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-10 11:44:02,652 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-10 11:44:03,915 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 11:44:04,023 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 11:44:04,050 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-10 11:46:33,112 - main - INFO - Shutting down Kite Backend API
+2025-08-10 11:46:34,382 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 11:46:35,003 - main - INFO - Starting Kite Backend API
+2025-08-10 11:46:35,003 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 11:46:35,004 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 11:47:01,606 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-02 to 2025-08-10
+2025-08-10 11:47:01,607 - services.historical_data_service - ERROR - Error fetching historical data for TCS: Authentication required. Kite instance not available.
+2025-08-10 11:47:01,607 - routers.historical_data - ERROR - Validation error for TCS: Authentication required. Kite instance not available.
+2025-08-10 11:47:09,633 - routers.auth - INFO - Login URL request
+2025-08-10 11:47:09,634 - services.auth_service - INFO - Login URL generated successfully
+2025-08-10 11:47:27,377 - routers.auth - INFO - Authentication attempt with request token
+2025-08-10 11:47:27,725 - services.auth_service - INFO - Authentication successful for user: MJ3002
+2025-08-10 11:47:31,212 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-02 to 2025-08-10
+2025-08-10 11:47:32,630 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 11:47:32,704 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 11:47:32,709 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-10 11:47:32,709 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-10 11:47:34,026 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 11:47:34,093 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 11:47:34,116 - services.technical_analysis_service - ERROR - Error analyzing timeframe 1day: macd() got an unexpected keyword argument 'window_sign'
+2025-08-10 11:47:34,116 - services.technical_analysis_service - ERROR - Technical analysis failed for TCS: No successful analysis for any timeframe
+2025-08-10 11:47:34,116 - routers.technical_analysis - ERROR - Validation error for TCS: No successful analysis for any timeframe
+2025-08-10 11:47:57,055 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-02 to 2025-08-10
+2025-08-10 11:47:58,420 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 11:47:58,503 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 11:47:58,510 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-10 11:47:58,510 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-10 11:47:59,869 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 11:47:59,938 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 11:47:59,941 - services.technical_analysis_service - ERROR - Error analyzing timeframe 1day: macd() got an unexpected keyword argument 'window_sign'
+2025-08-10 11:47:59,941 - services.technical_analysis_service - ERROR - Technical analysis failed for TCS: No successful analysis for any timeframe
+2025-08-10 11:47:59,941 - routers.technical_analysis - ERROR - Validation error for TCS: No successful analysis for any timeframe
+2025-08-10 11:48:44,419 - main - INFO - Shutting down Kite Backend API
+2025-08-10 11:48:45,363 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 11:48:45,834 - main - INFO - Starting Kite Backend API
+2025-08-10 11:48:45,834 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 11:48:45,834 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 11:51:05,017 - routers.auth - INFO - Login URL request
+2025-08-10 11:51:05,019 - services.auth_service - INFO - Login URL generated successfully
+2025-08-10 11:54:28,304 - routers.auth - INFO - Authentication attempt with request token
+2025-08-10 11:54:28,670 - services.auth_service - INFO - Authentication successful for user: MJ3002
+2025-08-10 11:54:35,538 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-02 to 2025-08-10
+2025-08-10 11:54:36,798 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 11:54:36,862 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 11:54:36,868 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-10 11:54:36,868 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-10 11:54:38,190 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 11:54:38,262 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 11:54:38,280 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-10 11:59:48,166 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-02 to 2025-08-10
+2025-08-10 11:59:49,434 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 11:59:49,505 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 11:59:49,510 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-10 11:59:49,510 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-10 11:59:50,751 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 11:59:50,821 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 11:59:50,839 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-10 12:01:48,659 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:01:49,680 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:01:50,164 - main - INFO - Starting Kite Backend API
+2025-08-10 12:01:50,164 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:01:50,164 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:02:05,932 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:02:06,693 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:02:07,068 - main - INFO - Starting Kite Backend API
+2025-08-10 12:02:07,068 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:02:07,068 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:02:19,207 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:02:19,970 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:02:20,371 - main - INFO - Starting Kite Backend API
+2025-08-10 12:02:20,371 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:02:20,371 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:02:26,740 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:02:27,390 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:02:28,975 - main - INFO - Starting Kite Backend API
+2025-08-10 12:02:28,975 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:02:28,975 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:02:31,507 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:02:32,163 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:02:32,821 - main - INFO - Starting Kite Backend API
+2025-08-10 12:02:32,821 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:02:32,821 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:02:35,854 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:02:36,451 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:02:37,114 - main - INFO - Starting Kite Backend API
+2025-08-10 12:02:37,114 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:02:37,114 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:14:21,600 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:18:09,369 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:18:10,524 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:18:11,135 - main - INFO - Starting Kite Backend API
+2025-08-10 12:18:11,135 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:18:11,135 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:18:47,862 - services.gemini_ai_service - INFO - Gemini AI service initialized successfully
+2025-08-10 12:18:47,863 - routers.gemini_ai - INFO - Generating content for model: gemini-2.0-flash
+2025-08-10 12:18:47,863 - routers.gemini_ai - INFO - Prompt preview: hello how are you
+2025-08-10 12:18:47,863 - services.gemini_ai_service - INFO - Generating response using model: gemini-2.0-flash
+2025-08-10 12:18:48,942 - services.gemini_ai_service - ERROR - Error generating Gemini response: argument of type 'Part' is not iterable
+2025-08-10 12:20:21,587 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:20:22,323 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:20:23,168 - main - INFO - Starting Kite Backend API
+2025-08-10 12:20:23,168 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:20:23,168 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:20:26,274 - services.gemini_ai_service - INFO - Gemini AI service initialized successfully
+2025-08-10 12:20:26,275 - routers.gemini_ai - INFO - Generating content for model: gemini-2.0-flash
+2025-08-10 12:20:26,276 - routers.gemini_ai - INFO - Prompt preview: hello how are you
+2025-08-10 12:20:26,276 - services.gemini_ai_service - INFO - Generating response using model: gemini-2.0-flash
+2025-08-10 12:20:28,407 - services.gemini_ai_service - ERROR - Error generating Gemini response: argument of type 'Part' is not iterable
+2025-08-10 12:21:04,413 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:21:05,179 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:21:05,990 - main - INFO - Starting Kite Backend API
+2025-08-10 12:21:05,990 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:21:05,990 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:21:09,759 - services.gemini_ai_service - INFO - Gemini AI service initialized successfully
+2025-08-10 12:21:09,761 - routers.gemini_ai - INFO - Generating content for model: gemini-2.0-flash
+2025-08-10 12:21:09,761 - routers.gemini_ai - INFO - Prompt preview: hello how are you
+2025-08-10 12:21:09,761 - services.gemini_ai_service - INFO - Generating response using model: gemini-2.0-flash
+2025-08-10 12:21:10,694 - services.gemini_ai_service - ERROR - Error generating Gemini response: argument of type 'Part' is not iterable
+2025-08-10 12:22:14,435 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:22:15,253 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:22:16,207 - main - INFO - Starting Kite Backend API
+2025-08-10 12:22:16,207 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:22:16,207 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:22:16,896 - services.gemini_ai_service - INFO - Gemini AI service initialized successfully
+2025-08-10 12:22:16,896 - routers.gemini_ai - INFO - Generating content for model: gemini-2.0-flash
+2025-08-10 12:22:16,897 - routers.gemini_ai - INFO - Prompt preview: hello how are you
+2025-08-10 12:22:16,897 - services.gemini_ai_service - INFO - Generating response using model: gemini-2.0-flash
+2025-08-10 12:22:18,988 - services.gemini_ai_service - ERROR - Error generating Gemini response: argument of type 'Part' is not iterable
+2025-08-10 12:22:39,665 - services.gemini_ai_service - INFO - Gemini AI service initialized successfully
+2025-08-10 12:22:39,666 - routers.gemini_ai - INFO - Generating content for model: gemini-2.0-flash
+2025-08-10 12:22:39,666 - routers.gemini_ai - INFO - Prompt preview: hello how are you
+2025-08-10 12:22:39,666 - services.gemini_ai_service - INFO - Generating response using model: gemini-2.0-flash
+2025-08-10 12:22:41,728 - services.gemini_ai_service - ERROR - Error generating Gemini response: argument of type 'Part' is not iterable
+2025-08-10 12:23:32,668 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:23:33,682 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:23:34,429 - main - INFO - Starting Kite Backend API
+2025-08-10 12:23:34,429 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:23:34,429 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:24:00,681 - services.gemini_ai_service - INFO - Gemini AI service initialized successfully
+2025-08-10 12:24:00,682 - routers.gemini_ai - INFO - Generating content for model: gemini-2.0-flash
+2025-08-10 12:24:00,682 - routers.gemini_ai - INFO - Prompt preview: hello how are you
+2025-08-10 12:24:00,682 - services.gemini_ai_service - INFO - Generating response using model: gemini-2.0-flash
+2025-08-10 12:24:02,800 - services.gemini_ai_service - ERROR - Error generating Gemini response: 'int' object has no attribute 'name'
+2025-08-10 12:24:33,297 - services.gemini_ai_service - INFO - Gemini AI service initialized successfully
+2025-08-10 12:24:33,300 - routers.gemini_ai - INFO - Generating content for model: gemini-2.0-flash
+2025-08-10 12:24:33,301 - routers.gemini_ai - INFO - Prompt preview: hello how are you
+2025-08-10 12:24:33,302 - services.gemini_ai_service - INFO - Generating response using model: gemini-2.0-flash
+2025-08-10 12:24:35,366 - services.gemini_ai_service - ERROR - Error generating Gemini response: 'int' object has no attribute 'name'
+2025-08-10 12:24:41,334 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:24:42,066 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:24:42,860 - main - INFO - Starting Kite Backend API
+2025-08-10 12:24:42,860 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:24:42,860 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:24:43,885 - services.gemini_ai_service - INFO - Gemini AI service initialized successfully
+2025-08-10 12:24:43,886 - routers.gemini_ai - INFO - Generating content for model: gemini-2.0-flash
+2025-08-10 12:24:43,886 - routers.gemini_ai - INFO - Prompt preview: hello how are you
+2025-08-10 12:24:43,886 - services.gemini_ai_service - INFO - Generating response using model: gemini-2.0-flash
+2025-08-10 12:24:45,884 - services.gemini_ai_service - ERROR - Error generating Gemini response: 'int' object has no attribute 'name'
+2025-08-10 12:25:22,780 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:25:23,507 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:25:24,285 - main - INFO - Starting Kite Backend API
+2025-08-10 12:25:24,285 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:25:24,285 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:25:25,485 - services.gemini_ai_service - INFO - Gemini AI service initialized successfully
+2025-08-10 12:25:25,485 - routers.gemini_ai - INFO - Generating content for model: gemini-2.0-flash
+2025-08-10 12:25:25,485 - routers.gemini_ai - INFO - Prompt preview: hello how are you
+2025-08-10 12:25:25,485 - services.gemini_ai_service - INFO - Generating response using model: gemini-2.0-flash
+2025-08-10 12:25:27,476 - services.gemini_ai_service - ERROR - Error generating Gemini response: 'int' object has no attribute 'name'
+2025-08-10 12:26:00,255 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:26:00,971 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:26:01,721 - main - INFO - Starting Kite Backend API
+2025-08-10 12:26:01,721 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:26:01,721 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:26:05,103 - services.gemini_ai_service - INFO - Gemini AI service initialized successfully
+2025-08-10 12:26:05,103 - routers.gemini_ai - INFO - Generating content for model: gemini-2.0-flash
+2025-08-10 12:26:05,103 - routers.gemini_ai - INFO - Prompt preview: hello how are you
+2025-08-10 12:26:05,103 - services.gemini_ai_service - INFO - Generating response using model: gemini-2.0-flash
+2025-08-10 12:26:07,163 - services.gemini_ai_service - INFO - Successfully generated response with 58 characters
+2025-08-10 12:26:07,164 - services.gemini_ai_service - ERROR - Error generating Gemini response: 1 validation error for GeminiResponse
+finish_reason
+  Input should be a valid string [type=string_type, input_value=1, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/string_type
+2025-08-10 12:27:17,725 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:27:18,536 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:27:19,439 - main - INFO - Starting Kite Backend API
+2025-08-10 12:27:19,439 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:27:19,439 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:28:01,404 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:28:02,212 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:28:03,024 - main - INFO - Starting Kite Backend API
+2025-08-10 12:28:03,024 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:28:03,024 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:28:38,308 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:28:39,228 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:28:40,097 - main - INFO - Starting Kite Backend API
+2025-08-10 12:28:40,097 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:28:40,097 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:29:06,747 - services.gemini_ai_service - INFO - Gemini AI service initialized successfully
+2025-08-10 12:29:06,748 - routers.gemini_ai - INFO - Generating content for model: gemini-2.0-flash
+2025-08-10 12:29:06,748 - routers.gemini_ai - INFO - Prompt preview: hello how are you
+2025-08-10 12:29:06,748 - services.gemini_ai_service - INFO - Generating response using model: gemini-2.0-flash
+2025-08-10 12:29:08,878 - services.gemini_ai_service - INFO - Successfully generated response with 58 characters
+2025-08-10 12:29:08,878 - routers.gemini_ai - INFO - Content generated successfully
+2025-08-10 12:34:10,749 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:34:11,721 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:34:12,583 - main - INFO - Starting Kite Backend API
+2025-08-10 12:34:12,583 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:34:12,583 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:34:15,212 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:34:15,887 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:34:16,468 - main - INFO - Starting Kite Backend API
+2025-08-10 12:34:16,468 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:34:16,468 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:34:24,349 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:34:24,856 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:34:25,854 - main - INFO - Starting Kite Backend API
+2025-08-10 12:34:25,854 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:34:25,854 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:34:28,786 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:34:29,428 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:34:30,069 - main - INFO - Starting Kite Backend API
+2025-08-10 12:34:30,069 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:34:30,069 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:34:33,102 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:34:33,922 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:34:34,568 - main - INFO - Starting Kite Backend API
+2025-08-10 12:34:34,568 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:34:34,568 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:34:46,921 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:34:48,625 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:34:49,546 - main - INFO - Starting Kite Backend API
+2025-08-10 12:34:49,546 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:34:49,546 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:34:52,079 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:34:52,857 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:34:53,524 - main - INFO - Starting Kite Backend API
+2025-08-10 12:34:53,524 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:34:53,524 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:34:58,275 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:34:58,996 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:34:59,666 - main - INFO - Starting Kite Backend API
+2025-08-10 12:34:59,666 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:34:59,666 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:35:07,676 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:35:08,466 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:35:09,089 - main - INFO - Starting Kite Backend API
+2025-08-10 12:35:09,090 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:35:09,090 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:37:34,662 - routers.auth - INFO - Login URL request
+2025-08-10 12:37:34,667 - services.auth_service - INFO - Login URL generated successfully
+2025-08-10 12:37:58,252 - routers.auth - INFO - Authentication attempt with request token
+2025-08-10 12:37:58,668 - services.auth_service - INFO - Authentication successful for user: MJ3002
+2025-08-10 12:38:03,767 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-02 to 2025-08-10
+2025-08-10 12:38:05,259 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 12:38:05,345 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 12:38:05,350 - services.gemini_ai_service - INFO - Gemini AI service initialized successfully
+2025-08-10 12:38:05,350 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-10 12:38:05,351 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-10 12:38:06,646 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 12:38:06,737 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 12:38:06,756 - services.gemini_ai_service - INFO - Generating response using model: gemini-pro
+2025-08-10 12:38:08,375 - services.gemini_ai_service - ERROR - Error generating Gemini response: 404 models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2025-08-10 12:38:08,376 - services.technical_analysis_service - ERROR - Failed to generate Gemini opinion: Error: 404 models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2025-08-10 12:38:08,376 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-10 12:39:26,134 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:39:26,934 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:39:27,782 - main - INFO - Starting Kite Backend API
+2025-08-10 12:39:27,782 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:39:27,782 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:39:30,613 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:39:33,506 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:39:34,503 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:39:35,280 - main - INFO - Starting Kite Backend API
+2025-08-10 12:39:35,280 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:39:35,280 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:39:37,483 - routers.auth - INFO - Login URL request
+2025-08-10 12:39:37,484 - services.auth_service - INFO - Login URL generated successfully
+2025-08-10 12:39:58,649 - routers.auth - INFO - Authentication attempt with request token
+2025-08-10 12:39:58,916 - services.auth_service - INFO - Authentication successful for user: MJ3002
+2025-08-10 12:40:04,864 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-02 to 2025-08-10
+2025-08-10 12:40:06,298 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 12:40:06,366 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 12:40:06,372 - services.gemini_ai_service - INFO - Gemini AI service initialized successfully
+2025-08-10 12:40:06,372 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-10 12:40:06,373 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-10 12:40:07,637 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 12:40:07,704 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 12:40:07,722 - services.gemini_ai_service - INFO - Generating response using model: gemini-flash-2.0
+2025-08-10 12:40:09,308 - services.gemini_ai_service - ERROR - Error generating Gemini response: 404 models/gemini-flash-2.0 is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2025-08-10 12:40:09,308 - services.technical_analysis_service - ERROR - Failed to generate Gemini opinion: Error: 404 models/gemini-flash-2.0 is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2025-08-10 12:40:09,309 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-10 12:41:09,907 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:41:10,650 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:41:11,480 - main - INFO - Starting Kite Backend API
+2025-08-10 12:41:11,480 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:41:11,480 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:41:19,836 - services.gemini_ai_service - INFO - Gemini AI service initialized successfully
+2025-08-10 12:41:19,837 - routers.gemini_ai - INFO - Generating content for model: gemini-2.0-flash
+2025-08-10 12:41:19,837 - routers.gemini_ai - INFO - Prompt preview: hello how are you
+2025-08-10 12:41:19,837 - services.gemini_ai_service - INFO - Generating response using model: gemini-2.0-flash
+2025-08-10 12:41:22,000 - services.gemini_ai_service - INFO - Successfully generated response with 58 characters
+2025-08-10 12:41:22,003 - routers.gemini_ai - INFO - Content generated successfully
+2025-08-10 12:41:25,630 - routers.auth - INFO - Login URL request
+2025-08-10 12:41:25,631 - services.auth_service - INFO - Login URL generated successfully
+2025-08-10 12:41:49,278 - routers.auth - INFO - Authentication attempt with request token
+2025-08-10 12:41:49,598 - services.auth_service - INFO - Authentication successful for user: MJ3002
+2025-08-10 12:41:52,710 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-02 to 2025-08-10
+2025-08-10 12:41:54,197 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 12:41:54,265 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 12:41:54,273 - services.gemini_ai_service - INFO - Gemini AI service initialized successfully
+2025-08-10 12:41:54,274 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-10 12:41:54,274 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-10 12:41:55,535 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 12:41:55,623 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 12:41:55,633 - services.gemini_ai_service - INFO - Generating response using model: gemini-2.0-flash
+2025-08-10 12:42:00,814 - services.gemini_ai_service - INFO - Successfully generated response with 1655 characters
+2025-08-10 12:42:00,814 - services.technical_analysis_service - INFO - Successfully generated Gemini opinion for TCS
+2025-08-10 12:42:00,814 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-10 12:42:49,874 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-02 to 2025-08-10
+2025-08-10 12:42:51,186 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 12:42:51,250 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 12:42:51,259 - services.gemini_ai_service - INFO - Gemini AI service initialized successfully
+2025-08-10 12:42:51,259 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-10 12:42:51,259 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-10 12:42:52,570 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 12:42:52,636 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 12:42:52,646 - services.gemini_ai_service - INFO - Generating response using model: gemini-2.0-flash
+2025-08-10 12:42:57,489 - services.gemini_ai_service - INFO - Successfully generated response with 1837 characters
+2025-08-10 12:42:57,490 - services.technical_analysis_service - INFO - Successfully generated Gemini opinion for TCS
+2025-08-10 12:42:57,490 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-10 12:49:32,689 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-02 to 2025-08-10
+2025-08-10 12:49:34,219 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 12:49:34,297 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 12:49:34,307 - services.gemini_ai_service - INFO - Gemini AI service initialized successfully
+2025-08-10 12:49:34,308 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-10 12:49:34,308 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-10 12:49:35,546 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 12:49:35,638 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 12:49:35,668 - services.gemini_ai_service - INFO - Generating response using model: gemini-2.0-flash
+2025-08-10 12:49:40,803 - services.gemini_ai_service - INFO - Successfully generated response with 1849 characters
+2025-08-10 12:49:40,804 - services.technical_analysis_service - INFO - Successfully generated Gemini opinion for TCS
+2025-08-10 12:49:40,804 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-10 12:52:48,243 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-02 to 2025-08-10
+2025-08-10 12:52:49,547 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 12:52:49,658 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 12:52:49,664 - services.gemini_ai_service - INFO - Gemini AI service initialized successfully
+2025-08-10 12:52:49,665 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-10 12:52:49,665 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-10 12:52:50,901 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 12:52:50,974 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 12:52:50,984 - services.gemini_ai_service - INFO - Generating response using model: gemini-2.0-flash
+2025-08-10 12:52:55,688 - services.gemini_ai_service - INFO - Successfully generated response with 1563 characters
+2025-08-10 12:52:55,689 - services.technical_analysis_service - INFO - Successfully generated Gemini opinion for TCS
+2025-08-10 12:52:55,690 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
+2025-08-10 12:54:29,997 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:54:31,952 - main - INFO - Starting Kite Backend API
+2025-08-10 12:54:31,952 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:54:31,952 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:54:35,694 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:54:37,002 - main - INFO - Starting Kite Backend API
+2025-08-10 12:54:37,002 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:54:37,002 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:54:41,750 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:54:43,152 - main - INFO - Starting Kite Backend API
+2025-08-10 12:54:43,152 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:54:43,152 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:54:46,493 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:54:47,811 - main - INFO - Starting Kite Backend API
+2025-08-10 12:54:47,811 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:54:47,811 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 12:54:52,967 - main - INFO - Shutting down Kite Backend API
+2025-08-10 12:54:54,221 - main - INFO - Starting Kite Backend API
+2025-08-10 12:54:54,221 - services.auth_service - INFO - KiteConnect instance created
+2025-08-10 12:54:54,221 - main - INFO - No access token found. Manual authentication required.
+2025-08-10 13:02:04,425 - routers.auth - INFO - Login URL request
+2025-08-10 13:02:04,427 - services.auth_service - INFO - Login URL generated successfully
+2025-08-10 13:02:22,175 - routers.auth - INFO - Authentication attempt with request token
+2025-08-10 13:02:23,053 - services.auth_service - INFO - Authentication successful for user: MJ3002
+2025-08-10 13:02:32,552 - routers.historical_data - INFO - Historical data request for TCS, 1day, 2025-05-02 to 2025-08-10
+2025-08-10 13:02:34,298 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 13:02:34,451 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 13:02:34,458 - services.gemini_ai_service - INFO - Gemini AI service initialized successfully
+2025-08-10 13:02:34,459 - routers.technical_analysis - INFO - Quick technical analysis for TCS, timeframe: 1day
+2025-08-10 13:02:34,459 - services.technical_analysis_service - INFO - Starting technical analysis for TCS
+2025-08-10 13:02:35,819 - services.historical_data_service - INFO - Fetching historical data for TCS (136330244) from 2025-05-02 to 2025-08-10 with timeframe day
+2025-08-10 13:02:35,976 - services.historical_data_service - INFO - Successfully fetched 71 records for TCS
+2025-08-10 13:02:36,005 - services.gemini_ai_service - INFO - Generating response using model: gemini-2.0-flash
+2025-08-10 13:02:40,548 - services.gemini_ai_service - INFO - Successfully generated response with 1616 characters
+2025-08-10 13:02:40,549 - services.technical_analysis_service - INFO - Successfully generated Gemini opinion for TCS
+2025-08-10 13:02:40,550 - services.technical_analysis_service - INFO - Technical analysis completed for TCS
