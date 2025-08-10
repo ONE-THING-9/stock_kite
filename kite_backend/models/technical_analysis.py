@@ -47,10 +47,25 @@ class BollingerBandResult(BaseModel):
 class VWAPResult(IndicatorResult):
     pass
 
+class CandlestickPattern(BaseModel):
+    name: str
+    pattern_type: str  # "bullish", "bearish", "neutral"
+    confidence: float  # 0.0 to 1.0
+    timestamp: str
+    description: str
+    candle_index: int
+
+class PatternResult(BaseModel):
+    pattern_name: str
+    occurrences: List[CandlestickPattern]
+    total_count: int
+    last_occurrence: Optional[str] = None
+
 class TimeframeAnalysis(BaseModel):
     timeframe: str
     data_points: int
     indicators: Dict[str, Any] = {}
+    candlestick_patterns: Dict[str, PatternResult] = {}
     
     def add_ma(self, result: MAResult):
         self.indicators[f"MA_{result.period}"] = result.dict()
@@ -69,6 +84,9 @@ class TimeframeAnalysis(BaseModel):
     
     def add_vwap(self, result: VWAPResult):
         self.indicators["VWAP"] = result.dict()
+    
+    def add_candlestick_patterns(self, patterns: Dict[str, PatternResult]):
+        self.candlestick_patterns = patterns
 
 class TechnicalAnalysisResponse(BaseModel):
     stock_name: str

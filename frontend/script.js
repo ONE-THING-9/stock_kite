@@ -65,6 +65,14 @@ class TradingDashboard {
         document.getElementById('showVWAP').addEventListener('change', () => this.updateChartIndicators());
         document.getElementById('showRSI').addEventListener('change', () => this.updateChartIndicators());
         document.getElementById('showMACD').addEventListener('change', () => this.updateChartIndicators());
+        
+        // Pattern radio button event listeners
+        document.getElementById('showHammer').addEventListener('change', () => this.updateChartIndicators());
+        document.getElementById('showDoji').addEventListener('change', () => this.updateChartIndicators());
+        document.getElementById('showMarubozu').addEventListener('change', () => this.updateChartIndicators());
+        document.getElementById('showEngulfing').addEventListener('change', () => this.updateChartIndicators());
+        document.getElementById('showHarami').addEventListener('change', () => this.updateChartIndicators());
+        document.getElementById('showMorningStar').addEventListener('change', () => this.updateChartIndicators());
     }
 
     async checkBackendStatus() {
@@ -219,6 +227,9 @@ class TradingDashboard {
             
             // Store analysis data for indicator overlays
             this.currentAnalysisData = analysisData;
+            
+            // Update patterns display
+            this.updatePatternsDisplay(analysisData);
 
         } catch (error) {
             console.error('Error loading data:', error);
@@ -374,6 +385,7 @@ class TradingDashboard {
         // Add technical indicators if available
         if (this.currentAnalysisData && this.currentAnalysisData.timeframe_results) {
             const indicators = this.currentAnalysisData.timeframe_results[0].indicators;
+            const patterns = this.currentAnalysisData.timeframe_results[0].candlestick_patterns;
             
             // Moving Averages
             if (document.getElementById('showSMA20').checked && indicators.MA_20) {
@@ -409,6 +421,12 @@ class TradingDashboard {
             
             if (document.getElementById('showMACD').checked && indicators.MACD) {
                 this.addMACD(plotData, dates, indicators.MACD);
+            }
+            
+            // Add candlestick patterns - check which radio button is selected
+            const selectedPattern = this.getSelectedPattern();
+            if (selectedPattern && patterns) {
+                this.addCandlestickPatterns(plotData, dates, patterns, selectedPattern);
             }
         }
 
@@ -1148,6 +1166,221 @@ class TradingDashboard {
         // Show error
         document.getElementById('stepError').style.display = 'block';
         document.getElementById('errorText').textContent = errorMessage;
+    }
+    
+    // Pattern-related functions
+    getSelectedPattern() {
+        const patternRadios = document.querySelectorAll('input[name="patternSelect"]');
+        for (const radio of patternRadios) {
+            if (radio.checked) {
+                return radio.value;
+            }
+        }
+        return 'hammer'; // Default to hammer if none selected
+    }
+    
+    addCandlestickPatterns(plotData, dates, patterns, selectedPattern) {
+        console.log('Adding candlestick pattern:', selectedPattern);
+        
+        // Define pattern colors and symbols
+        const patternStyles = {
+            hammer: { color: '#4CAF50', symbol: '▲', name: 'Hammer' },
+            doji: { color: '#FF9800', symbol: '◆', name: 'Doji' },
+            marubozu: { color: '#2196F3', symbol: '█', name: 'Marubozu' },
+            engulfing: { color: '#9C27B0', symbol: '⬛', name: 'Engulfing' },
+            harami: { color: '#F44336', symbol: '◼', name: 'Harami' },
+            morning_star: { color: '#00BCD4', symbol: '★', name: 'Morning Star' }
+        };
+        
+        // Only show the selected pattern
+        const pattern = patterns[selectedPattern];
+        if (pattern && pattern.occurrences && pattern.occurrences.length > 0) {
+            const style = patternStyles[selectedPattern];
+            if (!style) return;
+            
+            // Create arrays for pattern markers
+            const patternDates = [];
+            const patternPrices = [];
+            const patternTexts = [];
+            const patternColors = [];
+            
+            pattern.occurrences.forEach(occurrence => {
+                const candleIndex = occurrence.candle_index;
+                if (candleIndex >= 0 && candleIndex < dates.length) {
+                    const date = dates[candleIndex];
+                    const high = this.currentData.data[candleIndex].high;
+                    
+                    patternDates.push(date);
+                    patternPrices.push(high * 1.02); // Position slightly above the candle
+                    patternTexts.push(`${style.name}<br>Type: ${occurrence.pattern_type}<br>Confidence: ${(occurrence.confidence * 100).toFixed(1)}%<br>${occurrence.description}`);
+                    
+                    // Color based on pattern type
+                    let color = style.color;
+                    if (occurrence.pattern_type === 'bullish') {
+                        color = '#4CAF50';
+                    } else if (occurrence.pattern_type === 'bearish') {
+                        color = '#F44336';
+                    } else if (occurrence.pattern_type === 'neutral') {
+                        color = '#FF9800';
+                    }
+                    patternColors.push(color);
+                }
+            });
+            
+            // Add pattern markers to plot
+            if (patternDates.length > 0) {
+                plotData.push({
+                    type: 'scatter',
+                    mode: 'markers+text',
+                    x: patternDates,
+                    y: patternPrices,
+                    text: patternDates.map(() => style.symbol),
+                    textposition: 'middle center',
+                    textfont: {
+                        size: 14,
+                        color: patternColors
+                    },
+                    marker: {
+                        size: 8,
+                        color: patternColors,
+                        symbol: 'circle',
+                        line: {
+                            width: 2,
+                            color: 'white'
+                        }
+                    },
+                    name: `${style.name} (${patternDates.length})`,
+                    hovertext: patternTexts,
+                    hoverinfo: 'text',
+                    yaxis: 'y',
+                    showlegend: true,
+                    legendgroup: 'patterns'
+                });
+            }
+        }
+    }
+    
+    updatePatternsDisplay(analysisData) {
+        const patternsSummary = document.getElementById('patternsSummary');
+        
+        if (!analysisData || !analysisData.timeframe_results || !analysisData.timeframe_results[0]) {
+            patternsSummary.innerHTML = '<p>No pattern data available</p>';
+            return;
+        }
+        
+        const patterns = analysisData.timeframe_results[0].candlestick_patterns;
+        const summary = analysisData.summary?.candlestick_patterns || {};
+        
+        if (!patterns || Object.keys(patterns).length === 0) {
+            patternsSummary.innerHTML = '<p>No candlestick patterns detected</p>';
+            return;
+        }
+        
+        let patternsHtml = '<div class="patterns-grid">';
+        
+        // Define all patterns in order for consistent display
+        const patternOrder = ['hammer', 'doji', 'marubozu', 'engulfing', 'harami', 'morning_star'];
+        
+        patternOrder.forEach(patternKey => {
+            const pattern = patterns[patternKey];
+            const patternName = this.formatPatternName(patternKey);
+            const patternExplanation = this.getPatternExplanation(patternKey);
+            
+            let totalCount = 0;
+            let bullishCount = 0;
+            let bearishCount = 0;
+            let neutralCount = 0;
+            let lastOccurrence = 'N/A';
+            let dominantClass = 'neutral';
+            
+            if (pattern && pattern.total_count > 0) {
+                totalCount = pattern.total_count;
+                lastOccurrence = pattern.last_occurrence ? new Date(pattern.last_occurrence).toLocaleDateString() : 'N/A';
+                
+                // Count by type
+                pattern.occurrences.forEach(occurrence => {
+                    if (occurrence.pattern_type === 'bullish') bullishCount++;
+                    else if (occurrence.pattern_type === 'bearish') bearishCount++;
+                    else neutralCount++;
+                });
+                
+                // Determine dominant type
+                if (bullishCount > bearishCount && bullishCount > neutralCount) {
+                    dominantClass = 'bullish';
+                } else if (bearishCount > bullishCount && bearishCount > neutralCount) {
+                    dominantClass = 'bearish';
+                }
+            }
+            
+            patternsHtml += `
+                <div class="pattern-card ${dominantClass}">
+                    <div class="pattern-header">
+                        <span class="pattern-name">${patternName}</span>
+                        <div class="pattern-info">
+                            <div class="info-icon">
+                                i
+                                <div class="info-tooltip">${patternExplanation}</div>
+                            </div>
+                            <span class="pattern-count">${totalCount}</span>
+                        </div>
+                    </div>
+                    <div class="pattern-breakdown">
+                        <div class="pattern-type-count bullish">Bull: ${bullishCount}</div>
+                        <div class="pattern-type-count bearish">Bear: ${bearishCount}</div>
+                        <div class="pattern-type-count neutral">Neut: ${neutralCount}</div>
+                    </div>
+                    <div class="pattern-last">Last: ${lastOccurrence}</div>
+                </div>
+            `;
+        });
+        
+        patternsHtml += '</div>';
+        
+        // Add legend
+        patternsHtml += `
+            <div class="pattern-legend">
+                <h4>Pattern Legend:</h4>
+                <div class="legend-items">
+                    <span class="legend-item"><span class="pattern-symbol bullish">▲</span> Hammer</span>
+                    <span class="legend-item"><span class="pattern-symbol neutral">◆</span> Doji</span>
+                    <span class="legend-item"><span class="pattern-symbol">█</span> Marubozu</span>
+                    <span class="legend-item"><span class="pattern-symbol">⬛</span> Engulfing</span>
+                    <span class="legend-item"><span class="pattern-symbol bearish">◼</span> Harami</span>
+                    <span class="legend-item"><span class="pattern-symbol">★</span> Morning Star</span>
+                </div>
+            </div>
+        `;
+        
+        patternsSummary.innerHTML = patternsHtml;
+    }
+    
+    formatPatternName(patternKey) {
+        const nameMap = {
+            'hammer': 'Hammer',
+            'doji': 'Doji',
+            'marubozu': 'Marubozu',
+            'engulfing': 'Engulfing',
+            'harami': 'Harami',
+            'morning_star': 'Morning Star'
+        };
+        return nameMap[patternKey] || patternKey.replace(/_/g, ' ').toUpperCase();
+    }
+    
+    getPatternExplanation(patternKey) {
+        const explanations = {
+            'hammer': 'Bullish reversal pattern with a small body at the top and a long lower shadow. Indicates potential upward price movement after a downtrend. The long lower shadow shows rejection of lower prices.',
+            'doji': 'Indecision pattern where open and close prices are very similar, creating a cross-like shape. Suggests market uncertainty and potential trend reversal, especially at key support/resistance levels.',
+            'marubozu': 'Strong directional pattern with little to no shadows, indicating sustained buying (bullish) or selling (bearish) pressure. Shows decisive market sentiment with minimal price rejection.',
+            'engulfing': 'Reversal pattern where the current candle completely engulfs the previous candle\'s body. Bullish engulfing suggests upward reversal, bearish engulfing suggests downward reversal.',
+            'harami': 'Reversal pattern where a small candle is contained within the body of the previous larger candle. Suggests potential trend reversal and indicates market indecision after strong moves.',
+            'morning_star': 'Three-candle bullish reversal pattern consisting of: bearish candle, small-bodied candle (star), and bullish candle. Indicates potential upward price movement after a downtrend.'
+        };
+        
+        return explanations[patternKey] || 'Candlestick pattern used for technical analysis and trend identification.';
+    }
+    
+    capitalize(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
     }
 }
 

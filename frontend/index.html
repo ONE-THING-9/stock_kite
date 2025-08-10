@@ -100,18 +100,56 @@
                         </label>
                     </div>
                     
-                    <div class="oscillator-section">
-                        <h4>Oscillators</h4>
-                        <label class="indicator-toggle">
-                            <input type="checkbox" id="showRSI" value="RSI">
-                            <span class="checkmark"></span>
-                            RSI
-                        </label>
-                        <label class="indicator-toggle">
-                            <input type="checkbox" id="showMACD" value="MACD">
-                            <span class="checkmark"></span>
-                            MACD
-                        </label>
+                    <div class="indicators-row">
+                        <div class="oscillator-section">
+                            <h4>Oscillators</h4>
+                            <label class="indicator-toggle">
+                                <input type="checkbox" id="showRSI" value="RSI">
+                                <span class="checkmark"></span>
+                                RSI
+                            </label>
+                            <label class="indicator-toggle">
+                                <input type="checkbox" id="showMACD" value="MACD">
+                                <span class="checkmark"></span>
+                                MACD
+                            </label>
+                        </div>
+                        
+                        <div class="patterns-section">
+                            <h4>Candlestick Patterns</h4>
+                            <div class="pattern-radio-group">
+                                <label class="pattern-radio-toggle">
+                                    <input type="radio" name="patternSelect" id="showHammer" value="hammer" checked>
+                                    <span class="radiomark"></span>
+                                    Hammer
+                                </label>
+                                <label class="pattern-radio-toggle">
+                                    <input type="radio" name="patternSelect" id="showDoji" value="doji">
+                                    <span class="radiomark"></span>
+                                    Doji
+                                </label>
+                                <label class="pattern-radio-toggle">
+                                    <input type="radio" name="patternSelect" id="showMarubozu" value="marubozu">
+                                    <span class="radiomark"></span>
+                                    Marubozu
+                                </label>
+                                <label class="pattern-radio-toggle">
+                                    <input type="radio" name="patternSelect" id="showEngulfing" value="engulfing">
+                                    <span class="radiomark"></span>
+                                    Engulfing
+                                </label>
+                                <label class="pattern-radio-toggle">
+                                    <input type="radio" name="patternSelect" id="showHarami" value="harami">
+                                    <span class="radiomark"></span>
+                                    Harami
+                                </label>
+                                <label class="pattern-radio-toggle">
+                                    <input type="radio" name="patternSelect" id="showMorningStar" value="morning_star">
+                                    <span class="radiomark"></span>
+                                    Morning Star
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -131,6 +169,13 @@
                         <h3>Key Indicators</h3>
                         <div class="indicators-grid" id="indicatorsGrid">
                             <!-- Will be populated with indicator values -->
+                        </div>
+                    </div>
+
+                    <div class="analysis-section">
+                        <h3>Candlestick Patterns</h3>
+                        <div class="patterns-summary" id="patternsSummary">
+                            <p>Load data to see candlestick patterns</p>
                         </div>
                     </div>
                 </div>

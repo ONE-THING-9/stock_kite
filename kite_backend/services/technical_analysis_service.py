@@ -2,13 +2,14 @@ import pandas as pd
 import numpy as np
 import ta
 from datetime import datetime
-from typing import List, Optional
+from typing import List, Optional, Dict
 from jinja2 import Template
 from utils.logger import setup_logger
 from utils.config import settings
 from models.technical_analysis import (
     TechnicalAnalysisRequest, TechnicalAnalysisResponse, TimeframeAnalysis,
-    MAResult, RSIResult, MACDResult, BollingerBandResult, VWAPResult
+    MAResult, RSIResult, MACDResult, BollingerBandResult, VWAPResult,
+    CandlestickPattern, PatternResult
 )
 from services.historical_data_service import HistoricalDataService
 from services.auth_service import AuthService
@@ -98,6 +99,10 @@ class TechnicalAnalysisService:
         analysis.add_macd(self._calculate_macd(df))
         analysis.add_bollinger_bands(self._calculate_bollinger_bands(df))
         analysis.add_vwap(self._calculate_vwap(df))
+        
+        # Add candlestick pattern detection
+        patterns = self._detect_all_patterns(df)
+        analysis.add_candlestick_patterns(patterns)
         
         return analysis
     
@@ -263,7 +268,8 @@ class TechnicalAnalysisService:
         summary = {
             "total_timeframes": len(timeframe_results),
             "indicators_calculated": ["MA", "EMA", "RSI", "MACD", "BollingerBands", "VWAP"],
-            "overall_signals": {}
+            "overall_signals": {},
+            "candlestick_patterns": {}
         }
         
         # Aggregate signals across timeframes
@@ -271,7 +277,11 @@ class TechnicalAnalysisService:
         bearish_count = 0
         neutral_count = 0
         
+        # Aggregate patterns across timeframes
+        pattern_summary = {}
+        
         for tf_result in timeframe_results:
+            # Process indicators
             for indicator_name, indicator_data in tf_result.indicators.items():
                 signal = indicator_data.get('signal', 'NEUTRAL')
                 if 'BULLISH' in signal:
@@ -280,7 +290,38 @@ class TechnicalAnalysisService:
                     bearish_count += 1
                 else:
                     neutral_count += 1
+            
+            # Process candlestick patterns
+            for pattern_name, pattern_data in tf_result.candlestick_patterns.items():
+                if pattern_data.total_count > 0:
+                    if pattern_name not in pattern_summary:
+                        pattern_summary[pattern_name] = {
+                            'total_occurrences': 0,
+                            'bullish_count': 0,
+                            'bearish_count': 0,
+                            'neutral_count': 0,
+                            'last_occurrence': None
+                        }
+                    
+                    pattern_summary[pattern_name]['total_occurrences'] += pattern_data.total_count
+                    
+                    # Count pattern types
+                    for occurrence in pattern_data.occurrences:
+                        pattern_type = occurrence.pattern_type
+                        if pattern_type == 'bullish':
+                            pattern_summary[pattern_name]['bullish_count'] += 1
+                        elif pattern_type == 'bearish':
+                            pattern_summary[pattern_name]['bearish_count'] += 1
+                        else:
+                            pattern_summary[pattern_name]['neutral_count'] += 1
+                    
+                    # Update last occurrence
+                    if pattern_data.last_occurrence:
+                        if (not pattern_summary[pattern_name]['last_occurrence'] or 
+                            pattern_data.last_occurrence > pattern_summary[pattern_name]['last_occurrence']):
+                            pattern_summary[pattern_name]['last_occurrence'] = pattern_data.last_occurrence
         
+        # Calculate signal percentages
         total_signals = bullish_count + bearish_count + neutral_count
         if total_signals > 0:
             summary["overall_signals"] = {
@@ -288,6 +329,8 @@ class TechnicalAnalysisService:
                 "bearish_percentage": round((bearish_count / total_signals) * 100, 2),
                 "neutral_percentage": round((neutral_count / total_signals) * 100, 2)
             }
+        
+        summary["candlestick_patterns"] = pattern_summary
         
         return summary
     
@@ -353,3 +396,345 @@ class TechnicalAnalysisService:
         except Exception as e:
             self.logger.error(f"Error generating Gemini opinion: {str(e)}")
             return "Unable to generate AI opinion due to technical error."
+    
+    def _detect_all_patterns(self, df: pd.DataFrame) -> Dict[str, PatternResult]:
+        """
+        Detect all candlestick patterns in the dataframe
+        """
+        patterns = {}
+        
+        # Detect individual patterns
+        patterns["hammer"] = self._detect_hammer_pattern(df)
+        patterns["doji"] = self._detect_doji_pattern(df)
+        patterns["marubozu"] = self._detect_marubozu_pattern(df)
+        patterns["engulfing"] = self._detect_engulfing_pattern(df)
+        patterns["harami"] = self._detect_harami_pattern(df)
+        patterns["morning_star"] = self._detect_morning_star_pattern(df)
+        
+        return patterns
+    
+    def _detect_hammer_pattern(self, df: pd.DataFrame) -> PatternResult:
+        """
+        Detect Hammer candlestick pattern
+        Hammer: Small body at top, long lower shadow, minimal upper shadow
+        """
+        patterns = []
+        
+        for i in range(len(df)):
+            row = df.iloc[i]
+            open_price = row['open']
+            high = row['high']
+            low = row['low']
+            close = row['close']
+            
+            # Calculate body and shadow lengths
+            body_length = abs(close - open_price)
+            total_range = high - low
+            lower_shadow = min(open_price, close) - low
+            upper_shadow = high - max(open_price, close)
+            
+            # Hammer criteria
+            if total_range > 0:
+                body_ratio = body_length / total_range
+                lower_shadow_ratio = lower_shadow / total_range
+                upper_shadow_ratio = upper_shadow / total_range
+                
+                # Hammer pattern conditions
+                if (body_ratio < 0.3 and  # Small body
+                    lower_shadow_ratio > 0.6 and  # Long lower shadow
+                    upper_shadow_ratio < 0.1):  # Minimal upper shadow
+                    
+                    confidence = min(0.9, 0.5 + (lower_shadow_ratio - body_ratio))
+                    
+                    pattern = CandlestickPattern(
+                        name="Hammer",
+                        pattern_type="bullish",
+                        confidence=confidence,
+                        timestamp=str(row.name),
+                        description="Bullish reversal pattern with long lower shadow",
+                        candle_index=i
+                    )
+                    patterns.append(pattern)
+        
+        return PatternResult(
+            pattern_name="Hammer",
+            occurrences=patterns,
+            total_count=len(patterns),
+            last_occurrence=patterns[-1].timestamp if patterns else None
+        )
+    
+    def _detect_doji_pattern(self, df: pd.DataFrame) -> PatternResult:
+        """
+        Detect Doji candlestick pattern
+        Doji: Open and close are very close, indicating indecision
+        """
+        patterns = []
+        
+        for i in range(len(df)):
+            row = df.iloc[i]
+            open_price = row['open']
+            high = row['high']
+            low = row['low']
+            close = row['close']
+            
+            # Calculate body and total range
+            body_length = abs(close - open_price)
+            total_range = high - low
+            
+            # Doji criteria - body should be very small relative to total range
+            if total_range > 0:
+                body_ratio = body_length / total_range
+                
+                if body_ratio < 0.05:  # Body is less than 5% of total range
+                    confidence = min(0.9, 0.8 - body_ratio * 10)
+                    
+                    pattern = CandlestickPattern(
+                        name="Doji",
+                        pattern_type="neutral",
+                        confidence=confidence,
+                        timestamp=str(row.name),
+                        description="Indecision pattern with minimal body",
+                        candle_index=i
+                    )
+                    patterns.append(pattern)
+        
+        return PatternResult(
+            pattern_name="Doji",
+            occurrences=patterns,
+            total_count=len(patterns),
+            last_occurrence=patterns[-1].timestamp if patterns else None
+        )
+    
+    def _detect_marubozu_pattern(self, df: pd.DataFrame) -> PatternResult:
+        """
+        Detect Marubozu candlestick pattern
+        Marubozu: No or minimal shadows, strong directional move
+        """
+        patterns = []
+        
+        for i in range(len(df)):
+            row = df.iloc[i]
+            open_price = row['open']
+            high = row['high']
+            low = row['low']
+            close = row['close']
+            
+            # Calculate body and shadow lengths
+            body_length = abs(close - open_price)
+            total_range = high - low
+            lower_shadow = min(open_price, close) - low
+            upper_shadow = high - max(open_price, close)
+            
+            # Marubozu criteria
+            if total_range > 0:
+                body_ratio = body_length / total_range
+                shadow_ratio = (lower_shadow + upper_shadow) / total_range
+                
+                # Strong body with minimal shadows
+                if body_ratio > 0.9 and shadow_ratio < 0.1:
+                    pattern_type = "bullish" if close > open_price else "bearish"
+                    confidence = min(0.9, body_ratio)
+                    
+                    pattern = CandlestickPattern(
+                        name="Marubozu",
+                        pattern_type=pattern_type,
+                        confidence=confidence,
+                        timestamp=str(row.name),
+                        description=f"{pattern_type.title()} marubozu with strong directional move",
+                        candle_index=i
+                    )
+                    patterns.append(pattern)
+        
+        return PatternResult(
+            pattern_name="Marubozu",
+            occurrences=patterns,
+            total_count=len(patterns),
+            last_occurrence=patterns[-1].timestamp if patterns else None
+        )
+    
+    def _detect_engulfing_pattern(self, df: pd.DataFrame) -> PatternResult:
+        """
+        Detect Engulfing candlestick pattern
+        Engulfing: Current candle completely engulfs the previous candle
+        """
+        patterns = []
+        
+        for i in range(1, len(df)):  # Start from 1 since we need previous candle
+            current = df.iloc[i]
+            previous = df.iloc[i-1]
+            
+            curr_open = current['open']
+            curr_close = current['close']
+            curr_high = current['high']
+            curr_low = current['low']
+            
+            prev_open = previous['open']
+            prev_close = previous['close']
+            prev_high = previous['high']
+            prev_low = previous['low']
+            
+            # Check if current candle engulfs previous candle
+            current_bullish = curr_close > curr_open
+            previous_bullish = prev_close > prev_open
+            
+            # Bullish engulfing: bearish candle followed by bullish candle that engulfs it
+            if (not previous_bullish and current_bullish and
+                curr_open < prev_close and curr_close > prev_open and
+                curr_high >= prev_high and curr_low <= prev_low):
+                
+                # Calculate confidence based on size difference
+                curr_body = abs(curr_close - curr_open)
+                prev_body = abs(prev_close - prev_open)
+                confidence = min(0.9, 0.6 + (curr_body / prev_body) * 0.1)
+                
+                pattern = CandlestickPattern(
+                    name="Bullish Engulfing",
+                    pattern_type="bullish",
+                    confidence=confidence,
+                    timestamp=str(current.name),
+                    description="Bullish reversal pattern engulfing previous bearish candle",
+                    candle_index=i
+                )
+                patterns.append(pattern)
+            
+            # Bearish engulfing: bullish candle followed by bearish candle that engulfs it
+            elif (previous_bullish and not current_bullish and
+                  curr_open > prev_close and curr_close < prev_open and
+                  curr_high >= prev_high and curr_low <= prev_low):
+                
+                curr_body = abs(curr_close - curr_open)
+                prev_body = abs(prev_close - prev_open)
+                confidence = min(0.9, 0.6 + (curr_body / prev_body) * 0.1)
+                
+                pattern = CandlestickPattern(
+                    name="Bearish Engulfing",
+                    pattern_type="bearish",
+                    confidence=confidence,
+                    timestamp=str(current.name),
+                    description="Bearish reversal pattern engulfing previous bullish candle",
+                    candle_index=i
+                )
+                patterns.append(pattern)
+        
+        return PatternResult(
+            pattern_name="Engulfing",
+            occurrences=patterns,
+            total_count=len(patterns),
+            last_occurrence=patterns[-1].timestamp if patterns else None
+        )
+    
+    def _detect_harami_pattern(self, df: pd.DataFrame) -> PatternResult:
+        """
+        Detect Harami candlestick pattern
+        Harami: Small candle contained within the body of the previous large candle
+        """
+        patterns = []
+        
+        for i in range(1, len(df)):  # Start from 1 since we need previous candle
+            current = df.iloc[i]
+            previous = df.iloc[i-1]
+            
+            curr_open = current['open']
+            curr_close = current['close']
+            prev_open = previous['open']
+            prev_close = previous['close']
+            
+            # Calculate body ranges
+            curr_body_top = max(curr_open, curr_close)
+            curr_body_bottom = min(curr_open, curr_close)
+            prev_body_top = max(prev_open, prev_close)
+            prev_body_bottom = min(prev_open, prev_close)
+            
+            curr_body_length = abs(curr_close - curr_open)
+            prev_body_length = abs(prev_close - prev_open)
+            
+            # Check if current candle is contained within previous candle's body
+            if (curr_body_top < prev_body_top and curr_body_bottom > prev_body_bottom and
+                prev_body_length > 0 and curr_body_length / prev_body_length < 0.5):
+                
+                # Determine pattern type based on previous candle
+                previous_bullish = prev_close > prev_open
+                pattern_type = "bearish" if previous_bullish else "bullish"
+                
+                confidence = min(0.9, 0.7 - (curr_body_length / prev_body_length))
+                
+                pattern = CandlestickPattern(
+                    name="Harami",
+                    pattern_type=pattern_type,
+                    confidence=confidence,
+                    timestamp=str(current.name),
+                    description=f"{pattern_type.title()} harami reversal pattern",
+                    candle_index=i
+                )
+                patterns.append(pattern)
+        
+        return PatternResult(
+            pattern_name="Harami",
+            occurrences=patterns,
+            total_count=len(patterns),
+            last_occurrence=patterns[-1].timestamp if patterns else None
+        )
+    
+    def _detect_morning_star_pattern(self, df: pd.DataFrame) -> PatternResult:
+        """
+        Detect Morning Star candlestick pattern
+        Morning Star: Three-candle bullish reversal pattern
+        1. Bearish candle
+        2. Small-bodied candle (can be bullish or bearish)
+        3. Bullish candle that closes above middle of first candle
+        """
+        patterns = []
+        
+        for i in range(2, len(df)):  # Start from 2 since we need two previous candles
+            candle1 = df.iloc[i-2]  # First candle (bearish)
+            candle2 = df.iloc[i-1]  # Middle candle (small body)
+            candle3 = df.iloc[i]    # Third candle (bullish)
+            
+            # Extract OHLC for each candle
+            c1_open, c1_close = candle1['open'], candle1['close']
+            c2_open, c2_close = candle2['open'], candle2['close']
+            c3_open, c3_close = candle3['open'], candle3['close']
+            c2_high, c2_low = candle2['high'], candle2['low']
+            
+            # Calculate body lengths
+            c1_body = abs(c1_close - c1_open)
+            c2_body = abs(c2_close - c2_open)
+            c3_body = abs(c3_close - c3_open)
+            
+            # Morning star conditions
+            c1_bearish = c1_close < c1_open  # First candle is bearish
+            c3_bullish = c3_close > c3_open  # Third candle is bullish
+            c2_small = c2_body < (c1_body * 0.5)  # Middle candle has small body
+            
+            # Gap conditions (middle candle should gap below first, third should gap above middle)
+            gap_down = c2_high < min(c1_open, c1_close)
+            gap_up = c3_open > max(c2_open, c2_close)
+            
+            # Third candle should close above middle of first candle
+            c1_middle = (c1_open + c1_close) / 2
+            closes_above_middle = c3_close > c1_middle
+            
+            if (c1_bearish and c3_bullish and c2_small and 
+                closes_above_middle and (gap_down or gap_up)):
+                
+                # Calculate confidence based on pattern strength
+                gap_strength = 0.1 if (gap_down and gap_up) else 0.05
+                body_ratio = 1 - (c2_body / max(c1_body, c3_body))
+                confidence = min(0.9, 0.6 + gap_strength + body_ratio * 0.2)
+                
+                pattern = CandlestickPattern(
+                    name="Morning Star",
+                    pattern_type="bullish",
+                    confidence=confidence,
+                    timestamp=str(candle3.name),
+                    description="Three-candle bullish reversal pattern",
+                    candle_index=i
+                )
+                patterns.append(pattern)
+        
+        return PatternResult(
+            pattern_name="Morning Star",
+            occurrences=patterns,
+            total_count=len(patterns),
+            last_occurrence=patterns[-1].timestamp if patterns else None
+        )
