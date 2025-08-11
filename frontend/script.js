@@ -6,6 +6,7 @@ class TradingDashboard {
         this.currentData = null;
         this.loginUrl = null;
         this.currentAnalysisData = null;
+        this.currentMarketIndicators = null;
         this.init();
     }
 
@@ -26,6 +27,7 @@ class TradingDashboard {
 
     setupEventListeners() {
         document.getElementById('loadData').addEventListener('click', () => this.loadStockData());
+        document.getElementById('chatWithAI').addEventListener('click', () => this.chatWithAI());
         
         // Allow Enter key to trigger data loading
         document.getElementById('stockSymbol').addEventListener('keypress', (e) => {
@@ -241,6 +243,9 @@ class TradingDashboard {
             // Store analysis data for indicator overlays
             this.currentAnalysisData = analysisData;
             
+            // Store market indicators data for AI analysis
+            this.currentMarketIndicators = marketIndicatorsData;
+            
             // Update patterns display
             this.updatePatternsDisplay(analysisData);
 
@@ -249,6 +254,9 @@ class TradingDashboard {
 
             // Update support/resistance display
             this.updateSupportResistanceDisplay(analysisData, stockSymbol);
+
+            // Enable Chat with AI button when data is loaded
+            document.getElementById('chatWithAI').disabled = false;
 
         } catch (error) {
             console.error('Error loading data:', error);
@@ -1018,22 +1026,6 @@ class TradingDashboard {
             sentimentClass = 'bullish';
         }
 
-        // Generate Gemini opinion section if available
-        let geminiOpinion = '';
-        if (data.gemini_opinion) {
-            const uniqueId = `ai-analysis-${Date.now()}`;
-            geminiOpinion = `
-                <div class="gemini-opinion">
-                    <div class="ai-dropdown-header" onclick="window.tradingDashboard.toggleAIAnalysis('${uniqueId}')">
-                        <h4><span class="ai-icon">🤖</span> AI Analysis</h4>
-                        <span class="dropdown-arrow" id="${uniqueId}-arrow">▼</span>
-                    </div>
-                    <div class="ai-opinion-content collapsed" id="${uniqueId}">
-                        ${this.formatGeminiOpinion(data.gemini_opinion)}
-                    </div>
-                </div>
-            `;
-        }
 
         return `
             <div class="sentiment-summary">
@@ -1048,7 +1040,6 @@ class TradingDashboard {
                 <div class="indicators-calculated">
                     <small>Indicators: ${data.summary.indicators_calculated.join(', ')}</small>
                 </div>
-                ${geminiOpinion}
             </div>
         `;
     }
@@ -1158,11 +1149,92 @@ class TradingDashboard {
         return explanations[key] || 'Technical indicator used for market analysis.';
     }
 
-    formatGeminiOpinion(opinionText) {
-        if (!opinionText) return '';
+    async chatWithAI() {
+        if (!this.currentData || !this.currentAnalysisData) {
+            alert('Please load stock data first');
+            return;
+        }
+
+        this.showLoading(true);
+
+        try {
+            // Prepare all data to send to AI
+            const aiRequestData = {
+                historical_data: this.currentData,
+                technical_analysis: this.currentAnalysisData,
+                stock_symbol: this.getCurrentSymbol(),
+                timeframe: document.getElementById('timeframe').value,
+                days: parseInt(document.getElementById('days').value),
+                market_indicators: this.currentMarketIndicators || null
+            };
+
+            console.log('Sending data to AI analysis endpoint:', aiRequestData);
+
+            const response = await fetch(`${this.apiBaseUrl}/gemini-ai/analyze`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(aiRequestData)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || 'Failed to get AI analysis');
+            }
+
+            const aiResponse = await response.json();
+            
+            if (aiResponse.status === 'success') {
+                this.showAIAnalysisModal(aiResponse.response_text);
+            } else {
+                throw new Error(aiResponse.response_text || 'AI analysis failed');
+            }
+
+        } catch (error) {
+            console.error('Error getting AI analysis:', error);
+            alert(`Error getting AI analysis: ${error.message}`);
+        } finally {
+            this.showLoading(false);
+        }
+    }
+
+    showAIAnalysisModal(analysisText) {
+        // Create modal if it doesn't exist
+        let modal = document.getElementById('aiAnalysisModal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'aiAnalysisModal';
+            modal.className = 'ai-modal';
+            modal.innerHTML = `
+                <div class="ai-modal-content">
+                    <div class="ai-modal-header">
+                        <h3><span class="ai-icon">🤖</span> AI Analysis</h3>
+                        <button class="ai-modal-close" onclick="this.closest('.ai-modal').style.display='none'">&times;</button>
+                    </div>
+                    <div class="ai-modal-body" id="aiAnalysisContent"></div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // Update content and show modal
+        document.getElementById('aiAnalysisContent').innerHTML = this.formatAIResponse(analysisText);
+        modal.style.display = 'flex';
+
+        // Close modal when clicking outside
+        modal.onclick = function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
+    }
+
+    formatAIResponse(responseText) {
+        if (!responseText) return '';
         
         // Convert line breaks to HTML breaks and handle bullet points
-        let formatted = opinionText
+        let formatted = responseText
             // Convert \n to <br> for line breaks
             .replace(/\n/g, '<br>')
             // Handle markdown-style bullet points
@@ -1190,26 +1262,6 @@ class TradingDashboard {
         return formatted;
     }
 
-    toggleAIAnalysis(elementId) {
-        const content = document.getElementById(elementId);
-        const arrow = document.getElementById(`${elementId}-arrow`);
-        
-        if (!content || !arrow) return;
-
-        if (content.classList.contains('collapsed')) {
-            // Expand
-            content.classList.remove('collapsed');
-            content.classList.add('expanded');
-            arrow.textContent = '▲';
-            arrow.style.transform = 'rotate(180deg)';
-        } else {
-            // Collapse
-            content.classList.remove('expanded');
-            content.classList.add('collapsed');
-            arrow.textContent = '▼';
-            arrow.style.transform = 'rotate(0deg)';
-        }
-    }
 
     // Login Modal Methods
     showLoginModal() {

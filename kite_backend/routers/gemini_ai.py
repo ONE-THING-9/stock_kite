@@ -1,10 +1,12 @@
 from typing import List, Dict, Any
 from fastapi import APIRouter, HTTPException, Depends
+from jinja2 import Template
 from utils.logger import setup_logger
-from models.gemini_ai import GeminiRequest, GeminiResponse
+from utils.config import settings
+from models.gemini_ai import GeminiRequest, GeminiResponse, ComprehensiveAnalysisRequest
 from services.gemini_ai_service import GeminiAIService
 
-router = APIRouter(prefix="/gemini", tags=["Gemini AI"])
+router = APIRouter(prefix="/gemini-ai", tags=["Gemini AI"])
 logger = setup_logger(__name__)
 
 def get_gemini_service() -> GeminiAIService:
@@ -89,3 +91,102 @@ async def chat_with_gemini(
         request.model_name = "gemini-pro"
     
     return await generate_content(request, gemini_service)
+
+@router.post("/analyze", response_model=GeminiResponse)
+async def analyze_comprehensive_data(
+    request: ComprehensiveAnalysisRequest,
+    gemini_service: GeminiAIService = Depends(get_gemini_service)
+):
+    """
+    Analyze comprehensive stock data using Gemini AI
+    
+    This endpoint accepts historical data, technical analysis results, and other
+    stock information to provide a comprehensive AI-powered analysis.
+    """
+    try:
+        logger.info(f"Starting comprehensive AI analysis for {request.stock_symbol}")
+        
+        # Load the prompt template
+        prompt_file_path = "/Users/amitkumar/Desktop/stock/kite_backend/utils/prompts/technical_analysis_prompt.txt"
+        with open(prompt_file_path, 'r') as f:
+            prompt_template = f.read()
+        
+        # Prepare historical data for template
+        historical_data = {
+            "stock_name": request.stock_symbol,
+            "timeframe": request.timeframe,
+            "days": request.days,
+            "data_points": len(request.historical_data.get('data', [])),
+            "analysis_date": request.technical_analysis.get('analysis_date', 'N/A')
+        }
+        
+        # Prepare technical indicators data
+        technical_indicators = {}
+        if request.technical_analysis.get('timeframe_results'):
+            for tf_result in request.technical_analysis['timeframe_results']:
+                for indicator_name, indicator_data in tf_result.get('indicators', {}).items():
+                    technical_indicators[f"{tf_result['timeframe']}_{indicator_name}"] = {
+                        "signal": indicator_data.get('signal', 'NEUTRAL'),
+                        "current_value": indicator_data.get('current_value'),
+                        "name": indicator_data.get('name', indicator_name)
+                    }
+        
+        # Get summary data
+        summary = request.technical_analysis.get('summary', {})
+        
+        # Prepare market indicators data
+        market_data = {}
+        if request.market_indicators:
+            market_data = {
+                "india_vix": request.market_indicators.get('indicators', {}).get('india_vix'),
+                "put_call_ratio": request.market_indicators.get('indicators', {}).get('put_call_ratio') or 
+                                request.market_indicators.get('indicators', {}).get('nifty_pcr'),
+                "market_breadth": request.market_indicators.get('indicators', {}).get('market_breadth'),
+                "data_sources": request.market_indicators.get('data_sources', [])
+            }
+        
+        # Render the template with Jinja2
+        template = Template(prompt_template)
+        rendered_prompt = template.render(
+            historical_data=historical_data,
+            technical_indicators=technical_indicators,
+            summary=summary,
+            market_indicators=market_data
+        )
+        
+        logger.info(f"Generated prompt for {request.stock_symbol} (length: {len(rendered_prompt)} chars)")
+        
+        # Create Gemini request
+        gemini_request = GeminiRequest(
+            model_name=settings.gemini_model,
+            prompt=rendered_prompt,
+            temperature=0.3,  # Lower temperature for more consistent analysis
+            max_tokens=1500,  # Increased token limit for comprehensive analysis
+            top_p=0.9
+        )
+        
+        # Get Gemini response
+        response = gemini_service.generate_response(gemini_request)
+        
+        if response.status == "success":
+            logger.info(f"Successfully generated AI analysis for {request.stock_symbol}")
+            return response
+        else:
+            logger.error(f"Gemini AI analysis failed: {response.response_text}")
+            raise HTTPException(
+                status_code=500,
+                detail=f"AI analysis failed: {response.response_text}"
+            )
+            
+    except FileNotFoundError:
+        logger.error("Technical analysis prompt template not found")
+        raise HTTPException(
+            status_code=500,
+            detail="AI analysis template not found. Please check server configuration."
+        )
+    except Exception as e:
+        logger.error(f"Error in comprehensive analysis for {request.stock_symbol}: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to generate AI analysis: {str(e)}"
+        )

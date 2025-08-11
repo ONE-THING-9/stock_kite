@@ -13,18 +13,15 @@ from models.technical_analysis import (
 )
 from services.historical_data_service import HistoricalDataService
 from services.auth_service import AuthService
-from services.gemini_ai_service import GeminiAIService
 from models.stock_data import HistoricalDataRequest
-from models.gemini_ai import GeminiRequest
 
 class TechnicalAnalysisService:
     def __init__(self, auth_service: AuthService):
         self.logger = setup_logger(__name__)
         self.auth_service = auth_service
         self.historical_service = HistoricalDataService(auth_service)
-        self.gemini_service = GeminiAIService()
     
-    def analyze_stock(self, request: TechnicalAnalysisRequest, include_gemini_opinion: bool = False) -> TechnicalAnalysisResponse:
+    def analyze_stock(self, request: TechnicalAnalysisRequest) -> TechnicalAnalysisResponse:
         try:
             self.logger.info(f"Starting technical analysis for {request.stock_name}")
             
@@ -53,15 +50,6 @@ class TechnicalAnalysisService:
                 timeframe_results=timeframe_results,
                 summary=self._generate_summary(timeframe_results)
             )
-            
-            # Add Gemini opinion if requested
-            if include_gemini_opinion:
-                try:
-                    gemini_opinion = self._generate_gemini_opinion(response)
-                    response.gemini_opinion = gemini_opinion
-                except Exception as e:
-                    self.logger.error(f"Failed to generate Gemini opinion: {str(e)}")
-                    response.gemini_opinion = "Unable to generate AI opinion due to technical error."
             
             self.logger.info(f"Technical analysis completed for {request.stock_name}")
             return response
@@ -802,68 +790,6 @@ class TechnicalAnalysisService:
         
         return summary
     
-    def _generate_gemini_opinion(self, response: TechnicalAnalysisResponse) -> str:
-        """
-        Generate Gemini AI opinion based on technical analysis data
-        """
-        try:
-            # Load the prompt template
-            prompt_file_path = "/Users/amitkumar/Desktop/stock/kite_backend/utils/prompts/technical_analysis_prompt.txt"
-            with open(prompt_file_path, 'r') as f:
-                prompt_template = f.read()
-            
-            # Prepare historical data for template
-            historical_data = []
-            if response.timeframe_results:
-                tf_result = response.timeframe_results[0]  # Use first timeframe for historical data
-                historical_data = {
-                    "timeframe": tf_result.timeframe,
-                    "data_points": tf_result.data_points,
-                    "stock_name": response.stock_name,
-                    "analysis_date": response.analysis_date
-                }
-            
-            # Prepare technical indicators data
-            technical_indicators = {}
-            if response.timeframe_results:
-                for tf_result in response.timeframe_results:
-                    for indicator_name, indicator_data in tf_result.indicators.items():
-                        technical_indicators[f"{tf_result.timeframe}_{indicator_name}"] = {
-                            "signal": indicator_data.get('signal', 'NEUTRAL'),
-                            "current_value": indicator_data.get('current_value'),
-                            "name": indicator_data.get('name', indicator_name)
-                        }
-            
-            # Render the template with Jinja2
-            template = Template(prompt_template)
-            rendered_prompt = template.render(
-                historical_data=historical_data,
-                technical_indicators=technical_indicators,
-                summary=response.summary
-            )
-            
-            # Create Gemini request
-            gemini_request = GeminiRequest(
-                model_name=settings.gemini_model,
-                prompt=rendered_prompt,
-                temperature=0.3,  # Lower temperature for more consistent analysis
-                max_tokens=1000,
-                top_p=0.9
-            )
-            
-            # Get Gemini response
-            gemini_response = self.gemini_service.generate_response(gemini_request)
-            
-            if gemini_response.status == "success":
-                self.logger.info(f"Successfully generated Gemini opinion for {response.stock_name}")
-                return gemini_response.response_text
-            else:
-                self.logger.error(f"Failed to generate Gemini opinion: {gemini_response.response_text}")
-                return "Unable to generate AI opinion at this time."
-                
-        except Exception as e:
-            self.logger.error(f"Error generating Gemini opinion: {str(e)}")
-            return "Unable to generate AI opinion due to technical error."
     
     def _detect_all_patterns(self, df: pd.DataFrame) -> Dict[str, PatternResult]:
         """

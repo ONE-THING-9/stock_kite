@@ -21,3 +21,13 @@ class GeminiError(BaseModel):
     error: str
     message: str
     model_name: Optional[str] = None
+
+class ComprehensiveAnalysisRequest(BaseModel):
+    historical_data: Dict[str, Any] = Field(..., description="Historical stock data")
+    technical_analysis: Dict[str, Any] = Field(..., description="Technical analysis results")
+    stock_symbol: str = Field(..., description="Stock symbol being analyzed")
+    timeframe: str = Field(..., description="Timeframe used for analysis")
+    days: int = Field(..., description="Number of days of data")
+    market_indicators: Optional[Dict[str, Any]] = Field(
+        default=None, description="Market indicators (VIX, PCR, breadth, etc.)"
+    )

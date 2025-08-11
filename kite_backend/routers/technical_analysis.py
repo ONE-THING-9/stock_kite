@@ -76,7 +76,7 @@ async def quick_technical_analysis(
             to_date=to_date_calc
         )
         
-        response = service.analyze_stock(request, include_gemini_opinion=True)
+        response = service.analyze_stock(request)
         return response
         
     except ValueError as ve:
