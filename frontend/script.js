@@ -221,6 +221,18 @@ class TradingDashboard {
                 analysisData = await analysisResponse.json();
             }
 
+            // Get market indicators
+            let marketIndicatorsData = null;
+            try {
+                const marketResponse = await fetch(`${this.apiBaseUrl}/market-indicators/${stockSymbol}`);
+                if (marketResponse.ok) {
+                    marketIndicatorsData = await marketResponse.json();
+                    console.log('Market indicators data:', marketIndicatorsData);
+                }
+            } catch (error) {
+                console.warn('Failed to fetch market indicators:', error);
+            }
+
             this.updateChart(historicalData, stockSymbol);
             this.updateAnalysis(analysisData, stockSymbol);
             this.updateChartTitle(stockSymbol, historicalData);
@@ -230,6 +242,9 @@ class TradingDashboard {
             
             // Update patterns display
             this.updatePatternsDisplay(analysisData);
+
+            // Update market indicators display
+            this.updateMarketIndicators(marketIndicatorsData, stockSymbol);
 
         } catch (error) {
             console.error('Error loading data:', error);
@@ -1381,6 +1396,213 @@ class TradingDashboard {
     
     capitalize(str) {
         return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    updateMarketIndicators(marketData, stockSymbol) {
+        const container = document.getElementById('marketIndicatorsContent');
+        
+        if (!marketData || !marketData.indicators) {
+            container.innerHTML = '<p>Market indicators not available</p>';
+            return;
+        }
+
+        const indicators = marketData.indicators;
+        
+        let indicatorsHtml = '<div class="market-indicators-grid">';
+        
+        // India VIX Card
+        if (indicators.india_vix !== null) {
+            const vixValue = indicators.india_vix.toFixed(2);
+            const vixStatus = this.getVixStatus(indicators.india_vix);
+            indicatorsHtml += this.createMarketIndicatorCard(
+                '📊 India VIX',
+                vixValue,
+                vixStatus.class,
+                vixStatus.label,
+                'Volatility index measuring expected market volatility over next 30 days.',
+                this.getVixExplanation()
+            );
+        }
+
+        // Put/Call Ratio Card
+        if (indicators.put_call_ratio !== null || indicators.nifty_pcr !== null) {
+            const pcrValue = indicators.nifty_pcr || indicators.put_call_ratio;
+            if (pcrValue !== null) {
+                const pcrStatus = this.getPcrStatus(pcrValue);
+                indicatorsHtml += this.createMarketIndicatorCard(
+                    '⚖️ Put/Call Ratio',
+                    pcrValue.toFixed(2),
+                    pcrStatus.class,
+                    pcrStatus.label,
+                    'Ratio of put options to call options trading volume.',
+                    this.getPcrExplanation()
+                );
+            }
+        } else {
+            // Show placeholder for PCR
+            indicatorsHtml += this.createMarketIndicatorCard(
+                '⚖️ Put/Call Ratio',
+                'N/A',
+                'neutral',
+                'Data Loading',
+                'Calculating from options data...',
+                this.getPcrExplanation()
+            );
+        }
+
+        // Market Breadth Card
+        if (indicators.market_breadth) {
+            const breadth = indicators.market_breadth;
+            const breadthStatus = this.getBreadthStatus(breadth.advance_decline_ratio);
+            const breadthHtml = this.createMarketBreadthCard(breadth, breadthStatus);
+            indicatorsHtml += breadthHtml;
+        }
+
+        indicatorsHtml += '</div>';
+
+        // Add data sources
+        if (marketData.data_sources && marketData.data_sources.length > 0) {
+            indicatorsHtml += `
+                <div class="data-sources">
+                    <strong>Data Sources:</strong>
+                    <div class="data-source-tags">
+                        ${marketData.data_sources.map(source => `<span class="data-source-tag">${source}</span>`).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        container.innerHTML = indicatorsHtml;
+    }
+
+    createMarketIndicatorCard(title, value, statusClass, statusLabel, description, explanation) {
+        return `
+            <div class="market-indicator-card">
+                <div class="market-indicator-header">
+                    <div class="market-indicator-title">
+                        ${title}
+                    </div>
+                    <div class="market-info-icon">
+                        i
+                        <div class="market-info-tooltip">${explanation}</div>
+                    </div>
+                </div>
+                <div class="market-indicator-value ${statusClass}">${value}</div>
+                <div class="market-indicator-description">${description}</div>
+                <span class="market-indicator-status ${statusClass}">${statusLabel}</span>
+            </div>
+        `;
+    }
+
+    createMarketBreadthCard(breadth, status) {
+        return `
+            <div class="market-indicator-card" style="grid-column: 1 / -1;">
+                <div class="market-indicator-header">
+                    <div class="market-indicator-title">
+                        📈 Market Breadth
+                    </div>
+                    <div class="market-info-icon">
+                        i
+                        <div class="market-info-tooltip">${this.getBreadthExplanation()}</div>
+                    </div>
+                </div>
+                <div class="market-breadth-details">
+                    <div class="breadth-item">
+                        <span class="breadth-label">Advances</span>
+                        <div class="breadth-value" style="color: var(--accent-green);">${breadth.advances}</div>
+                    </div>
+                    <div class="breadth-item">
+                        <span class="breadth-label">Declines</span>
+                        <div class="breadth-value" style="color: var(--accent-red);">${breadth.declines}</div>
+                    </div>
+                    <div class="breadth-item">
+                        <span class="breadth-label">Unchanged</span>
+                        <div class="breadth-value">${breadth.unchanged}</div>
+                    </div>
+                </div>
+                <div class="market-indicator-description">
+                    A/D Ratio: ${breadth.advance_decline_ratio.toFixed(2)} | ADL: ${breadth.advance_decline_line.toFixed(0)}
+                </div>
+                <span class="market-indicator-status ${status.class}">${status.label}</span>
+            </div>
+        `;
+    }
+
+    getVixStatus(vix) {
+        if (vix < 15) {
+            return { class: 'positive', label: 'Low Volatility' };
+        } else if (vix < 25) {
+            return { class: 'neutral', label: 'Moderate Volatility' };
+        } else {
+            return { class: 'negative', label: 'High Volatility' };
+        }
+    }
+
+    getPcrStatus(pcr) {
+        if (pcr < 0.7) {
+            return { class: 'negative', label: 'Bearish Sentiment' };
+        } else if (pcr < 1.0) {
+            return { class: 'neutral', label: 'Neutral Sentiment' };
+        } else {
+            return { class: 'positive', label: 'Bullish Sentiment' };
+        }
+    }
+
+    getBreadthStatus(ratio) {
+        if (ratio > 1.5) {
+            return { class: 'positive', label: 'Strong Breadth' };
+        } else if (ratio > 0.8) {
+            return { class: 'neutral', label: 'Neutral Breadth' };
+        } else {
+            return { class: 'negative', label: 'Weak Breadth' };
+        }
+    }
+
+    getVixExplanation() {
+        return `
+            <strong>India VIX (Volatility Index)</strong>
+            The India VIX measures the market's expectation of volatility over the next 30 days. 
+            <br><br>
+            • <strong>Below 15:</strong> Low volatility, stable market conditions
+            <br>
+            • <strong>15-25:</strong> Moderate volatility, normal market fluctuations  
+            <br>
+            • <strong>Above 25:</strong> High volatility, increased market uncertainty
+            <br><br>
+            Higher VIX values typically indicate fear in the market, while lower values suggest complacency.
+        `;
+    }
+
+    getPcrExplanation() {
+        return `
+            <strong>Put/Call Ratio (PCR)</strong>
+            The ratio of put options to call options being traded, indicating market sentiment.
+            <br><br>
+            • <strong>Below 0.7:</strong> Excessive bullishness, potential market top
+            <br>
+            • <strong>0.7-1.0:</strong> Balanced sentiment, normal market conditions
+            <br>  
+            • <strong>Above 1.0:</strong> Bearish sentiment, potential market bottom
+            <br><br>
+            Contrarian indicator: High PCR can signal buying opportunity, low PCR may signal caution.
+        `;
+    }
+
+    getBreadthExplanation() {
+        return `
+            <strong>Market Breadth</strong>
+            Measures the participation of stocks in the market movement using advance/decline data.
+            <br><br>
+            • <strong>Advances:</strong> Stocks that closed higher than previous day
+            <br>
+            • <strong>Declines:</strong> Stocks that closed lower than previous day  
+            <br>
+            • <strong>A/D Ratio:</strong> Advances divided by declines (>1 = bullish)
+            <br>
+            • <strong>ADL:</strong> Cumulative measure of market breadth over time
+            <br><br>
+            Strong breadth (more advances) confirms uptrend health. Weak breadth may signal trend weakness.
+        `;
     }
 }
 

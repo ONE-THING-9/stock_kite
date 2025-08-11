@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 import uvicorn
 
-from routers import auth, historical_data, metadata, live_data, technical_analysis, gemini_ai
+from routers import auth, historical_data, metadata, live_data, technical_analysis, gemini_ai, market_indicators
 from utils.logger import setup_logger
 from utils.config import settings
 from services.auth_service import AuthService
@@ -54,6 +54,7 @@ app.include_router(metadata.router)
 app.include_router(live_data.router)
 app.include_router(technical_analysis.router)
 app.include_router(gemini_ai.router)
+app.include_router(market_indicators.router)
 
 @app.get("/")
 async def root():
@@ -66,7 +67,8 @@ async def root():
             "metadata": "/metadata", 
             "live": "/live",
             "technical_analysis": "/technical-analysis",
-            "gemini_ai": "/gemini"
+            "gemini_ai": "/gemini",
+            "market_indicators": "/market-indicators"
         }
     }
 

@@ -59,3 +59,27 @@ class ErrorResponse(BaseModel):
     error: str
     message: str
     status_code: int
+
+class MarketIndicatorsRequest(BaseModel):
+    stock_name: str = Field(..., description="Stock symbol or trading symbol")
+    date: Optional[date] = None
+
+class MarketBreadthData(BaseModel):
+    advances: int
+    declines: int
+    unchanged: int
+    advance_decline_ratio: float
+    advance_decline_line: float
+
+class MarketIndicatorsData(BaseModel):
+    india_vix: Optional[float] = None
+    put_call_ratio: Optional[float] = None
+    market_breadth: Optional[MarketBreadthData] = None
+    nifty_pcr: Optional[float] = None
+    data_date: date
+    last_updated: datetime = Field(default_factory=datetime.now)
+
+class MarketIndicatorsResponse(BaseModel):
+    stock_name: str
+    indicators: MarketIndicatorsData
+    data_sources: List[str] = Field(default_factory=list)
