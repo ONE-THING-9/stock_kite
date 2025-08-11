@@ -63,6 +63,7 @@ class TradingDashboard {
         document.getElementById('showEMA50').addEventListener('change', () => this.updateChartIndicators());
         document.getElementById('showBB').addEventListener('change', () => this.updateChartIndicators());
         document.getElementById('showVWAP').addEventListener('change', () => this.updateChartIndicators());
+        document.getElementById('showSupportResistance').addEventListener('change', () => this.updateChartIndicators());
         document.getElementById('showRSI').addEventListener('change', () => this.updateChartIndicators());
         document.getElementById('showMACD').addEventListener('change', () => this.updateChartIndicators());
         
@@ -245,6 +246,9 @@ class TradingDashboard {
 
             // Update market indicators display
             this.updateMarketIndicators(marketIndicatorsData, stockSymbol);
+
+            // Update support/resistance display
+            this.updateSupportResistanceDisplay(analysisData, stockSymbol);
 
         } catch (error) {
             console.error('Error loading data:', error);
@@ -429,6 +433,11 @@ class TradingDashboard {
                 this.addMovingAverage(plotData, dates, indicators.VWAP, 'VWAP', '#795548', 'y');
             }
             
+            // Support & Resistance
+            if (document.getElementById('showSupportResistance').checked && indicators.SupportResistance) {
+                this.addSupportResistanceLevels(plotData, dates, indicators.SupportResistance);
+            }
+            
             // Oscillators (RSI, MACD) - these need subplots
             if (document.getElementById('showRSI').checked && indicators.RSI) {
                 this.addRSI(plotData, dates, indicators.RSI);
@@ -592,6 +601,155 @@ class TradingDashboard {
                 marker: { color: 'rgba(158, 158, 158, 0.6)' },
                 yaxis: macdYAxis,
                 showlegend: true
+            });
+        }
+    }
+
+    addSupportResistanceLevels(plotData, dates, srData) {
+        if (!srData || (!srData.support_levels && !srData.resistance_levels)) {
+            return;
+        }
+
+        // Get price range for better level positioning
+        const prices = this.currentData.data.map(item => item.close);
+        const minPrice = Math.min(...prices);
+        const maxPrice = Math.max(...prices);
+        const priceRange = maxPrice - minPrice;
+
+        // Add support levels
+        if (srData.support_levels && srData.support_levels.length > 0) {
+            srData.support_levels.forEach((level, index) => {
+                const opacity = Math.min(1.0, level.strength / 10); // Strength-based opacity
+                const lineWidth = Math.max(1, level.strength / 2); // Strength-based line width
+                
+                plotData.push({
+                    type: 'scatter',
+                    mode: 'lines',
+                    x: [dates[0], dates[dates.length - 1]],
+                    y: [level.price, level.price],
+                    name: `Support ${level.price.toFixed(2)} (${level.strength.toFixed(1)})`,
+                    line: {
+                        color: `rgba(0, 200, 83, ${opacity})`,
+                        width: lineWidth,
+                        dash: 'solid'
+                    },
+                    hovertemplate: `<b>Support Level</b><br>` +
+                                 `Price: ₹%{y}<br>` +
+                                 `Strength: ${level.strength.toFixed(1)}/10<br>` +
+                                 `Touches: ${level.touches}<br>` +
+                                 `Distance: ${level.distance_from_current.toFixed(2)}%<br>` +
+                                 `Type: ${level.is_dynamic ? 'Dynamic' : 'Static'}<br>` +
+                                 `<extra></extra>`,
+                    yaxis: 'y',
+                    showlegend: true,
+                    legendgroup: 'support'
+                });
+
+                // Add touch points if available
+                if (level.last_touch_timestamp) {
+                    const touchDate = new Date(level.last_touch_timestamp);
+                    plotData.push({
+                        type: 'scatter',
+                        mode: 'markers',
+                        x: [touchDate],
+                        y: [level.price],
+                        name: `S-Touch ${level.price.toFixed(2)}`,
+                        marker: {
+                            symbol: 'triangle-up',
+                            size: 8,
+                            color: 'rgba(0, 200, 83, 0.8)',
+                            line: {
+                                width: 1,
+                                color: '#00c853'
+                            }
+                        },
+                        hovertemplate: `<b>Support Touch</b><br>` +
+                                     `Price: ₹%{y}<br>` +
+                                     `Date: %{x}<br>` +
+                                     `<extra></extra>`,
+                        yaxis: 'y',
+                        showlegend: false
+                    });
+                }
+            });
+        }
+
+        // Add resistance levels
+        if (srData.resistance_levels && srData.resistance_levels.length > 0) {
+            srData.resistance_levels.forEach((level, index) => {
+                const opacity = Math.min(1.0, level.strength / 10); // Strength-based opacity
+                const lineWidth = Math.max(1, level.strength / 2); // Strength-based line width
+                
+                plotData.push({
+                    type: 'scatter',
+                    mode: 'lines',
+                    x: [dates[0], dates[dates.length - 1]],
+                    y: [level.price, level.price],
+                    name: `Resistance ${level.price.toFixed(2)} (${level.strength.toFixed(1)})`,
+                    line: {
+                        color: `rgba(244, 67, 54, ${opacity})`,
+                        width: lineWidth,
+                        dash: 'solid'
+                    },
+                    hovertemplate: `<b>Resistance Level</b><br>` +
+                                 `Price: ₹%{y}<br>` +
+                                 `Strength: ${level.strength.toFixed(1)}/10<br>` +
+                                 `Touches: ${level.touches}<br>` +
+                                 `Distance: ${level.distance_from_current.toFixed(2)}%<br>` +
+                                 `Type: ${level.is_dynamic ? 'Dynamic' : 'Static'}<br>` +
+                                 `<extra></extra>`,
+                    yaxis: 'y',
+                    showlegend: true,
+                    legendgroup: 'resistance'
+                });
+
+                // Add touch points if available
+                if (level.last_touch_timestamp) {
+                    const touchDate = new Date(level.last_touch_timestamp);
+                    plotData.push({
+                        type: 'scatter',
+                        mode: 'markers',
+                        x: [touchDate],
+                        y: [level.price],
+                        name: `R-Touch ${level.price.toFixed(2)}`,
+                        marker: {
+                            symbol: 'triangle-down',
+                            size: 8,
+                            color: 'rgba(244, 67, 54, 0.8)',
+                            line: {
+                                width: 1,
+                                color: '#f44336'
+                            }
+                        },
+                        hovertemplate: `<b>Resistance Touch</b><br>` +
+                                     `Price: ₹%{y}<br>` +
+                                     `Date: %{x}<br>` +
+                                     `<extra></extra>`,
+                        yaxis: 'y',
+                        showlegend: false
+                    });
+                }
+            });
+        }
+
+        // Add current price line for reference
+        const currentPrice = srData.current_price;
+        if (currentPrice) {
+            plotData.push({
+                type: 'scatter',
+                mode: 'lines',
+                x: [dates[0], dates[dates.length - 1]],
+                y: [currentPrice, currentPrice],
+                name: `Current Price ₹${currentPrice.toFixed(2)}`,
+                line: {
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    width: 1,
+                    dash: 'dot'
+                },
+                hovertemplate: `<b>Current Price</b><br>Price: ₹%{y}<br><extra></extra>`,
+                yaxis: 'y',
+                showlegend: true,
+                legendgroup: 'current'
             });
         }
     }
@@ -1603,6 +1761,179 @@ class TradingDashboard {
             <br><br>
             Strong breadth (more advances) confirms uptrend health. Weak breadth may signal trend weakness.
         `;
+    }
+
+    updateSupportResistanceDisplay(analysisData, stockSymbol) {
+        const container = document.getElementById('supportResistanceContent');
+        
+        if (!analysisData || !analysisData.timeframe_results || !analysisData.timeframe_results[0]) {
+            container.innerHTML = '<p>Support and resistance data not available</p>';
+            return;
+        }
+
+        const indicators = analysisData.timeframe_results[0].indicators;
+        const srData = indicators.SupportResistance;
+        
+        if (!srData) {
+            container.innerHTML = '<p>No support and resistance levels detected</p>';
+            return;
+        }
+
+        let srHtml = '<div class="support-resistance-grid">';
+
+        // Current price and signal
+        if (srData.current_price && srData.price_action_signal) {
+            const signalClass = this.getPriceActionSignalClass(srData.price_action_signal);
+            srHtml += `
+                <div class="sr-current-price-card">
+                    <div class="sr-card-header">
+                        <span class="sr-title">📍 Current Status</span>
+                    </div>
+                    <div class="sr-current-price">₹${srData.current_price.toFixed(2)}</div>
+                    <div class="sr-price-signal ${signalClass}">
+                        ${this.formatPriceActionSignal(srData.price_action_signal)}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Nearest support and resistance
+        srHtml += '<div class="sr-nearest-levels">';
+        
+        if (srData.nearest_support) {
+            const support = srData.nearest_support;
+            srHtml += `
+                <div class="sr-level-card support">
+                    <div class="sr-card-header">
+                        <span class="sr-title">🛡️ Nearest Support</span>
+                        <span class="sr-strength">Strength: ${support.strength.toFixed(1)}/10</span>
+                    </div>
+                    <div class="sr-price support">₹${support.price.toFixed(2)}</div>
+                    <div class="sr-details">
+                        <div class="sr-detail-item">Distance: ${Math.abs(support.distance_from_current).toFixed(2)}%</div>
+                        <div class="sr-detail-item">Touches: ${support.touches}</div>
+                        <div class="sr-detail-item">Type: ${support.is_dynamic ? 'Dynamic' : 'Static'}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        if (srData.nearest_resistance) {
+            const resistance = srData.nearest_resistance;
+            srHtml += `
+                <div class="sr-level-card resistance">
+                    <div class="sr-card-header">
+                        <span class="sr-title">🚧 Nearest Resistance</span>
+                        <span class="sr-strength">Strength: ${resistance.strength.toFixed(1)}/10</span>
+                    </div>
+                    <div class="sr-price resistance">₹${resistance.price.toFixed(2)}</div>
+                    <div class="sr-details">
+                        <div class="sr-detail-item">Distance: ${Math.abs(resistance.distance_from_current).toFixed(2)}%</div>
+                        <div class="sr-detail-item">Touches: ${resistance.touches}</div>
+                        <div class="sr-detail-item">Type: ${resistance.is_dynamic ? 'Dynamic' : 'Static'}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        srHtml += '</div>'; // Close nearest levels
+
+        // All support levels
+        if (srData.support_levels && srData.support_levels.length > 0) {
+            srHtml += `
+                <div class="sr-all-levels">
+                    <h4>🛡️ All Support Levels</h4>
+                    <div class="sr-levels-list">
+            `;
+            
+            srData.support_levels.forEach((level, index) => {
+                srHtml += `
+                    <div class="sr-level-item support">
+                        <span class="sr-level-price">₹${level.price.toFixed(2)}</span>
+                        <span class="sr-level-strength">Strength: ${level.strength.toFixed(1)}</span>
+                        <span class="sr-level-distance">${Math.abs(level.distance_from_current).toFixed(1)}% away</span>
+                        <span class="sr-level-touches">${level.touches} touches</span>
+                    </div>
+                `;
+            });
+
+            srHtml += '</div></div>'; // Close levels list and all levels
+        }
+
+        // All resistance levels
+        if (srData.resistance_levels && srData.resistance_levels.length > 0) {
+            srHtml += `
+                <div class="sr-all-levels">
+                    <h4>🚧 All Resistance Levels</h4>
+                    <div class="sr-levels-list">
+            `;
+            
+            srData.resistance_levels.forEach((level, index) => {
+                srHtml += `
+                    <div class="sr-level-item resistance">
+                        <span class="sr-level-price">₹${level.price.toFixed(2)}</span>
+                        <span class="sr-level-strength">Strength: ${level.strength.toFixed(1)}</span>
+                        <span class="sr-level-distance">${Math.abs(level.distance_from_current).toFixed(1)}% away</span>
+                        <span class="sr-level-touches">${level.touches} touches</span>
+                    </div>
+                `;
+            });
+
+            srHtml += '</div></div>'; // Close levels list and all levels
+        }
+
+        // Recent level breaks
+        if (srData.key_level_breaks && srData.key_level_breaks.length > 0) {
+            srHtml += `
+                <div class="sr-recent-breaks">
+                    <h4>⚡ Recent Level Breaks</h4>
+                    <div class="sr-breaks-list">
+            `;
+            
+            srData.key_level_breaks.forEach(breakInfo => {
+                const breakClass = breakInfo.break_type === 'breakout' ? 'bullish' : 'bearish';
+                const breakIcon = breakInfo.break_type === 'breakout' ? '📈' : '📉';
+                srHtml += `
+                    <div class="sr-break-item ${breakClass}">
+                        <span class="sr-break-icon">${breakIcon}</span>
+                        <div class="sr-break-details">
+                            <div class="sr-break-type">${breakInfo.break_type.toUpperCase()}</div>
+                            <div class="sr-break-price">₹${breakInfo.level_price.toFixed(2)} → ₹${breakInfo.price_at_break.toFixed(2)}</div>
+                            <div class="sr-break-significance">Significance: ${breakInfo.significance.toFixed(1)}/10</div>
+                            <div class="sr-break-date">${new Date(breakInfo.timestamp).toLocaleDateString()}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            srHtml += '</div></div>'; // Close breaks list and recent breaks
+        }
+
+        srHtml += '</div>'; // Close main grid
+
+        container.innerHTML = srHtml;
+    }
+
+    getPriceActionSignalClass(signal) {
+        const classMap = {
+            'APPROACHING_SUPPORT': 'neutral',
+            'APPROACHING_RESISTANCE': 'neutral', 
+            'BREAKOUT': 'bullish',
+            'BREAKDOWN': 'bearish',
+            'NEUTRAL': 'neutral'
+        };
+        return classMap[signal] || 'neutral';
+    }
+
+    formatPriceActionSignal(signal) {
+        const formatMap = {
+            'APPROACHING_SUPPORT': '🎯 Approaching Support',
+            'APPROACHING_RESISTANCE': '🎯 Approaching Resistance',
+            'BREAKOUT': '📈 Breakout',
+            'BREAKDOWN': '📉 Breakdown', 
+            'NEUTRAL': '➡️ Neutral'
+        };
+        return formatMap[signal] || signal;
     }
 }
 

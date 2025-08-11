@@ -47,6 +47,26 @@ class BollingerBandResult(BaseModel):
 class VWAPResult(IndicatorResult):
     pass
 
+class SupportResistanceLevel(BaseModel):
+    price: float
+    level_type: str  # "support" or "resistance"
+    strength: float  # 0.0 to 10.0 - higher means stronger level
+    touches: int  # number of times price touched this level
+    last_touch_timestamp: Optional[str] = None
+    volume_at_level: Optional[float] = None  # average volume when price was at this level
+    distance_from_current: float  # distance from current price (percentage)
+    is_dynamic: bool = False  # True for trendline-based levels, False for horizontal levels
+
+class SupportResistanceResult(BaseModel):
+    name: str = "Support & Resistance"
+    support_levels: List[SupportResistanceLevel]
+    resistance_levels: List[SupportResistanceLevel]
+    nearest_support: Optional[SupportResistanceLevel] = None
+    nearest_resistance: Optional[SupportResistanceLevel] = None
+    current_price: float
+    price_action_signal: Optional[str] = None  # "APPROACHING_SUPPORT", "APPROACHING_RESISTANCE", "BREAKOUT", "BREAKDOWN", "NEUTRAL"
+    key_level_breaks: List[Dict[str, Any]] = []  # recent level breaks with timestamp and significance
+
 class CandlestickPattern(BaseModel):
     name: str
     pattern_type: str  # "bullish", "bearish", "neutral"
@@ -84,6 +104,9 @@ class TimeframeAnalysis(BaseModel):
     
     def add_vwap(self, result: VWAPResult):
         self.indicators["VWAP"] = result.dict()
+    
+    def add_support_resistance(self, result: SupportResistanceResult):
+        self.indicators["SupportResistance"] = result.dict()
     
     def add_candlestick_patterns(self, patterns: Dict[str, PatternResult]):
         self.candlestick_patterns = patterns

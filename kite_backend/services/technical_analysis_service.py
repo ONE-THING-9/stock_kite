@@ -2,14 +2,14 @@ import pandas as pd
 import numpy as np
 import ta
 from datetime import datetime
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Any
 from jinja2 import Template
 from utils.logger import setup_logger
 from utils.config import settings
 from models.technical_analysis import (
     TechnicalAnalysisRequest, TechnicalAnalysisResponse, TimeframeAnalysis,
     MAResult, RSIResult, MACDResult, BollingerBandResult, VWAPResult,
-    CandlestickPattern, PatternResult
+    CandlestickPattern, PatternResult, SupportResistanceLevel, SupportResistanceResult
 )
 from services.historical_data_service import HistoricalDataService
 from services.auth_service import AuthService
@@ -99,6 +99,7 @@ class TechnicalAnalysisService:
         analysis.add_macd(self._calculate_macd(df))
         analysis.add_bollinger_bands(self._calculate_bollinger_bands(df))
         analysis.add_vwap(self._calculate_vwap(df))
+        analysis.add_support_resistance(self._calculate_support_resistance(df))
         
         # Add candlestick pattern detection
         patterns = self._detect_all_patterns(df)
@@ -264,12 +265,431 @@ class TechnicalAnalysisService:
             signal=signal
         )
     
+    def _calculate_support_resistance(self, df: pd.DataFrame) -> SupportResistanceResult:
+        """
+        Calculate support and resistance levels using multiple algorithms
+        """
+        current_price = float(df['close'].iloc[-1])
+        
+        # Combine different detection methods
+        pivot_levels = self._detect_pivot_levels(df)
+        horizontal_levels = self._detect_horizontal_levels(df)
+        volume_levels = self._detect_volume_weighted_levels(df)
+        
+        # Merge and rank levels
+        all_levels = pivot_levels + horizontal_levels + volume_levels
+        support_levels, resistance_levels = self._classify_and_rank_levels(all_levels, current_price)
+        
+        # Find nearest levels
+        nearest_support = self._find_nearest_level(support_levels, current_price, "below")
+        nearest_resistance = self._find_nearest_level(resistance_levels, current_price, "above")
+        
+        # Generate price action signal
+        price_action_signal = self._generate_price_action_signal(
+            df, current_price, nearest_support, nearest_resistance
+        )
+        
+        # Detect recent level breaks
+        key_level_breaks = self._detect_recent_breaks(df, all_levels)
+        
+        return SupportResistanceResult(
+            support_levels=support_levels[:5],  # Top 5 support levels
+            resistance_levels=resistance_levels[:5],  # Top 5 resistance levels
+            nearest_support=nearest_support,
+            nearest_resistance=nearest_resistance,
+            current_price=current_price,
+            price_action_signal=price_action_signal,
+            key_level_breaks=key_level_breaks
+        )
+    
+    def _detect_pivot_levels(self, df: pd.DataFrame, window: int = 5) -> List[SupportResistanceLevel]:
+        """
+        Detect pivot points (swing highs and lows) as support/resistance levels
+        """
+        levels = []
+        
+        # Find swing highs (resistance levels)
+        for i in range(window, len(df) - window):
+            current_high = df['high'].iloc[i]
+            left_highs = df['high'].iloc[i-window:i]
+            right_highs = df['high'].iloc[i+1:i+window+1]
+            
+            # Check if current high is higher than surrounding highs
+            if current_high > left_highs.max() and current_high > right_highs.max():
+                # Calculate strength based on how much higher it is
+                avg_surrounding = (left_highs.mean() + right_highs.mean()) / 2
+                strength_factor = (current_high - avg_surrounding) / avg_surrounding * 100
+                strength = min(10.0, max(1.0, strength_factor * 2))
+                
+                levels.append(SupportResistanceLevel(
+                    price=current_high,
+                    level_type="resistance",
+                    strength=strength,
+                    touches=1,
+                    last_touch_timestamp=str(df.index[i]),
+                    volume_at_level=float(df['volume'].iloc[i]) if 'volume' in df.columns else None,
+                    distance_from_current=((current_high - df['close'].iloc[-1]) / df['close'].iloc[-1]) * 100,
+                    is_dynamic=False
+                ))
+        
+        # Find swing lows (support levels)
+        for i in range(window, len(df) - window):
+            current_low = df['low'].iloc[i]
+            left_lows = df['low'].iloc[i-window:i]
+            right_lows = df['low'].iloc[i+1:i+window+1]
+            
+            # Check if current low is lower than surrounding lows
+            if current_low < left_lows.min() and current_low < right_lows.min():
+                # Calculate strength based on how much lower it is
+                avg_surrounding = (left_lows.mean() + right_lows.mean()) / 2
+                strength_factor = (avg_surrounding - current_low) / avg_surrounding * 100
+                strength = min(10.0, max(1.0, strength_factor * 2))
+                
+                levels.append(SupportResistanceLevel(
+                    price=current_low,
+                    level_type="support",
+                    strength=strength,
+                    touches=1,
+                    last_touch_timestamp=str(df.index[i]),
+                    volume_at_level=float(df['volume'].iloc[i]) if 'volume' in df.columns else None,
+                    distance_from_current=((df['close'].iloc[-1] - current_low) / current_low) * 100,
+                    is_dynamic=False
+                ))
+        
+        return levels
+    
+    def _detect_horizontal_levels(self, df: pd.DataFrame, touch_threshold: float = 0.5) -> List[SupportResistanceLevel]:
+        """
+        Detect horizontal support/resistance levels based on price clustering
+        Uses price levels that have been touched multiple times
+        """
+        levels = []
+        
+        # Get all significant price points (highs and lows)
+        highs = df['high'].tolist()
+        lows = df['low'].tolist()
+        closes = df['close'].tolist()
+        all_prices = highs + lows + closes
+        
+        # Remove duplicates and sort
+        unique_prices = list(set(all_prices))
+        unique_prices.sort()
+        
+        # Group nearby prices (within touch_threshold %)
+        price_groups = []
+        current_group = [unique_prices[0]]
+        
+        for price in unique_prices[1:]:
+            # If price is within threshold of current group's average, add to group
+            group_avg = sum(current_group) / len(current_group)
+            if abs(price - group_avg) / group_avg * 100 <= touch_threshold:
+                current_group.append(price)
+            else:
+                # Save current group if it has multiple touches
+                if len(current_group) >= 2:
+                    price_groups.append(current_group)
+                current_group = [price]
+        
+        # Don't forget the last group
+        if len(current_group) >= 2:
+            price_groups.append(current_group)
+        
+        # Convert price groups to support/resistance levels
+        current_price = df['close'].iloc[-1]
+        
+        for group in price_groups:
+            level_price = sum(group) / len(group)  # Average price of the group
+            touches = len(group)
+            
+            # Determine if it's support or resistance based on current price
+            level_type = "support" if level_price < current_price else "resistance"
+            
+            # Calculate strength based on number of touches and recency
+            strength = min(10.0, touches * 2.0)  # More touches = stronger level
+            
+            # Find the most recent touch
+            recent_touches = []
+            tolerance = level_price * touch_threshold / 100
+            
+            for i, row in df.iterrows():
+                if (abs(row['high'] - level_price) <= tolerance or 
+                    abs(row['low'] - level_price) <= tolerance or 
+                    abs(row['close'] - level_price) <= tolerance):
+                    recent_touches.append(str(i))
+            
+            last_touch = recent_touches[-1] if recent_touches else None
+            
+            # Calculate average volume at this level
+            volume_at_level = None
+            if 'volume' in df.columns and recent_touches:
+                volumes = []
+                for timestamp in recent_touches:
+                    try:
+                        idx = df.index.get_loc(timestamp) if timestamp in df.index else None
+                        if idx is not None:
+                            volumes.append(df['volume'].iloc[idx])
+                    except:
+                        continue
+                volume_at_level = sum(volumes) / len(volumes) if volumes else None
+            
+            # Calculate distance from current price
+            distance = abs(level_price - current_price) / current_price * 100
+            
+            levels.append(SupportResistanceLevel(
+                price=level_price,
+                level_type=level_type,
+                strength=strength,
+                touches=touches,
+                last_touch_timestamp=last_touch,
+                volume_at_level=volume_at_level,
+                distance_from_current=distance,
+                is_dynamic=False
+            ))
+        
+        return levels
+    
+    def _detect_volume_weighted_levels(self, df: pd.DataFrame) -> List[SupportResistanceLevel]:
+        """
+        Detect support/resistance levels based on volume profile
+        Areas with high volume often act as strong support/resistance
+        """
+        levels = []
+        
+        if 'volume' not in df.columns:
+            return levels  # Return empty if no volume data
+        
+        current_price = df['close'].iloc[-1]
+        
+        # Create price bins for volume analysis
+        price_min = df['low'].min()
+        price_max = df['high'].max()
+        price_range = price_max - price_min
+        bin_size = price_range / 50  # 50 price bins
+        
+        # Calculate volume at each price level
+        price_volume_map = {}
+        
+        for idx, row in df.iterrows():
+            # For each candle, distribute volume across its price range
+            candle_range = row['high'] - row['low']
+            if candle_range == 0:
+                # Point candle, assign all volume to that price
+                price_bin = int((row['close'] - price_min) / bin_size)
+                price_volume_map[price_bin] = price_volume_map.get(price_bin, 0) + row['volume']
+            else:
+                # Distribute volume proportionally across the candle's range
+                volume_per_price = row['volume'] / candle_range
+                start_bin = int((row['low'] - price_min) / bin_size)
+                end_bin = int((row['high'] - price_min) / bin_size)
+                
+                for bin_num in range(max(0, start_bin), min(50, end_bin + 1)):
+                    bin_price = price_min + (bin_num * bin_size)
+                    if row['low'] <= bin_price <= row['high']:
+                        price_volume_map[bin_num] = price_volume_map.get(bin_num, 0) + volume_per_price
+        
+        # Find high-volume areas (potential support/resistance)
+        if not price_volume_map:
+            return levels
+            
+        avg_volume = sum(price_volume_map.values()) / len(price_volume_map)
+        volume_threshold = avg_volume * 1.5  # 50% above average
+        
+        # Find local volume maxima
+        sorted_bins = sorted(price_volume_map.keys())
+        
+        for i, bin_num in enumerate(sorted_bins):
+            volume = price_volume_map[bin_num]
+            
+            if volume > volume_threshold:
+                # Check if this is a local maximum
+                is_local_max = True
+                check_range = 3  # Check 3 bins on each side
+                
+                for j in range(max(0, i - check_range), min(len(sorted_bins), i + check_range + 1)):
+                    if j != i and sorted_bins[j] in price_volume_map:
+                        if price_volume_map[sorted_bins[j]] > volume:
+                            is_local_max = False
+                            break
+                
+                if is_local_max:
+                    level_price = price_min + (bin_num * bin_size)
+                    level_type = "support" if level_price < current_price else "resistance"
+                    
+                    # Strength based on volume relative to average
+                    strength = min(10.0, (volume / avg_volume) * 2.0)
+                    
+                    # Find touches at this level
+                    touches = 0
+                    recent_touch = None
+                    tolerance = bin_size
+                    
+                    for idx, row in df.iterrows():
+                        if (abs(row['high'] - level_price) <= tolerance or 
+                            abs(row['low'] - level_price) <= tolerance):
+                            touches += 1
+                            recent_touch = str(idx)
+                    
+                    distance = abs(level_price - current_price) / current_price * 100
+                    
+                    levels.append(SupportResistanceLevel(
+                        price=level_price,
+                        level_type=level_type,
+                        strength=strength,
+                        touches=max(1, touches),
+                        last_touch_timestamp=recent_touch,
+                        volume_at_level=float(volume),
+                        distance_from_current=distance,
+                        is_dynamic=False
+                    ))
+        
+        return levels
+    
+    def _classify_and_rank_levels(self, all_levels: List[SupportResistanceLevel], current_price: float) -> tuple:
+        """
+        Classify levels as support/resistance and rank by strength
+        """
+        support_levels = []
+        resistance_levels = []
+        
+        # Remove duplicate levels (same price within 0.1%)
+        unique_levels = []
+        for level in all_levels:
+            is_duplicate = False
+            for existing in unique_levels:
+                if abs(level.price - existing.price) / existing.price * 100 < 0.1:
+                    # Keep the stronger level
+                    if level.strength > existing.strength:
+                        unique_levels.remove(existing)
+                        unique_levels.append(level)
+                    is_duplicate = True
+                    break
+            if not is_duplicate:
+                unique_levels.append(level)
+        
+        # Classify and update distance from current price
+        for level in unique_levels:
+            level.distance_from_current = abs(level.price - current_price) / current_price * 100
+            
+            if level.price < current_price:
+                level.level_type = "support"
+                support_levels.append(level)
+            else:
+                level.level_type = "resistance"
+                resistance_levels.append(level)
+        
+        # Sort by strength (descending)
+        support_levels.sort(key=lambda x: x.strength, reverse=True)
+        resistance_levels.sort(key=lambda x: x.strength, reverse=True)
+        
+        return support_levels, resistance_levels
+    
+    def _find_nearest_level(self, levels: List[SupportResistanceLevel], current_price: float, direction: str) -> Optional[SupportResistanceLevel]:
+        """
+        Find the nearest support or resistance level
+        """
+        if not levels:
+            return None
+        
+        if direction == "below":
+            # Find nearest support (below current price)
+            valid_levels = [level for level in levels if level.price < current_price]
+            if valid_levels:
+                return max(valid_levels, key=lambda x: x.price)
+        elif direction == "above":
+            # Find nearest resistance (above current price)
+            valid_levels = [level for level in levels if level.price > current_price]
+            if valid_levels:
+                return min(valid_levels, key=lambda x: x.price)
+        
+        return None
+    
+    def _generate_price_action_signal(self, df: pd.DataFrame, current_price: float, 
+                                    nearest_support: Optional[SupportResistanceLevel], 
+                                    nearest_resistance: Optional[SupportResistanceLevel]) -> str:
+        """
+        Generate price action signal based on proximity to levels
+        """
+        # Calculate recent price movement
+        if len(df) < 5:
+            return "NEUTRAL"
+        
+        recent_closes = df['close'].tail(5).tolist()
+        price_change = (recent_closes[-1] - recent_closes[0]) / recent_closes[0] * 100
+        
+        # Check proximity to levels (within 2% is considered "approaching")
+        proximity_threshold = 2.0
+        
+        if nearest_support and abs(current_price - nearest_support.price) / current_price * 100 <= proximity_threshold:
+            if price_change < -1:  # Falling towards support
+                return "APPROACHING_SUPPORT"
+            elif current_price < nearest_support.price:  # Broke below support
+                return "BREAKDOWN"
+        
+        if nearest_resistance and abs(current_price - nearest_resistance.price) / current_price * 100 <= proximity_threshold:
+            if price_change > 1:  # Rising towards resistance
+                return "APPROACHING_RESISTANCE"
+            elif current_price > nearest_resistance.price:  # Broke above resistance
+                return "BREAKOUT"
+        
+        return "NEUTRAL"
+    
+    def _detect_recent_breaks(self, df: pd.DataFrame, all_levels: List[SupportResistanceLevel]) -> List[Dict[str, Any]]:
+        """
+        Detect recent breaks of significant support/resistance levels
+        """
+        breaks = []
+        
+        if len(df) < 10:
+            return breaks
+        
+        # Only check last 20 candles for recent breaks
+        recent_df = df.tail(20)
+        
+        for level in all_levels:
+            if level.strength < 5.0:  # Only consider strong levels
+                continue
+            
+            # Check if price crossed the level recently
+            for i in range(1, len(recent_df)):
+                current_row = recent_df.iloc[i]
+                previous_row = recent_df.iloc[i-1]
+                
+                current_close = current_row['close']
+                previous_close = previous_row['close']
+                
+                # Check for breakout (support became resistance or vice versa)
+                if level.level_type == "support":
+                    # Support break: previous close above, current close below
+                    if previous_close > level.price and current_close < level.price:
+                        breaks.append({
+                            "timestamp": str(current_row.name),
+                            "level_price": level.price,
+                            "break_type": "breakdown",
+                            "significance": level.strength,
+                            "price_at_break": current_close
+                        })
+                elif level.level_type == "resistance":
+                    # Resistance break: previous close below, current close above
+                    if previous_close < level.price and current_close > level.price:
+                        breaks.append({
+                            "timestamp": str(current_row.name),
+                            "level_price": level.price,
+                            "break_type": "breakout",
+                            "significance": level.strength,
+                            "price_at_break": current_close
+                        })
+        
+        # Sort by significance (most significant first)
+        breaks.sort(key=lambda x: x['significance'], reverse=True)
+        return breaks[:3]  # Return top 3 most significant recent breaks
+    
     def _generate_summary(self, timeframe_results: List[TimeframeAnalysis]) -> dict:
         summary = {
             "total_timeframes": len(timeframe_results),
-            "indicators_calculated": ["MA", "EMA", "RSI", "MACD", "BollingerBands", "VWAP"],
+            "indicators_calculated": ["MA", "EMA", "RSI", "MACD", "BollingerBands", "VWAP", "SupportResistance"],
             "overall_signals": {},
-            "candlestick_patterns": {}
+            "candlestick_patterns": {},
+            "support_resistance_summary": {}
         }
         
         # Aggregate signals across timeframes
@@ -331,6 +751,54 @@ class TechnicalAnalysisService:
             }
         
         summary["candlestick_patterns"] = pattern_summary
+        
+        # Aggregate support/resistance data
+        sr_summary = {
+            "total_support_levels": 0,
+            "total_resistance_levels": 0,
+            "strongest_support": None,
+            "strongest_resistance": None,
+            "price_action_signals": {},
+            "recent_breaks": []
+        }
+        
+        for tf_result in timeframe_results:
+            sr_data = tf_result.indicators.get("SupportResistance", {})
+            if sr_data:
+                # Count levels
+                support_levels = sr_data.get("support_levels", [])
+                resistance_levels = sr_data.get("resistance_levels", [])
+                sr_summary["total_support_levels"] += len(support_levels)
+                sr_summary["total_resistance_levels"] += len(resistance_levels)
+                
+                # Track strongest levels
+                if support_levels:
+                    strongest_support = max(support_levels, key=lambda x: x.get("strength", 0))
+                    if (sr_summary["strongest_support"] is None or 
+                        strongest_support.get("strength", 0) > sr_summary["strongest_support"].get("strength", 0)):
+                        sr_summary["strongest_support"] = strongest_support
+                
+                if resistance_levels:
+                    strongest_resistance = max(resistance_levels, key=lambda x: x.get("strength", 0))
+                    if (sr_summary["strongest_resistance"] is None or 
+                        strongest_resistance.get("strength", 0) > sr_summary["strongest_resistance"].get("strength", 0)):
+                        sr_summary["strongest_resistance"] = strongest_resistance
+                
+                # Aggregate price action signals
+                signal = sr_data.get("price_action_signal", "NEUTRAL")
+                sr_summary["price_action_signals"][tf_result.timeframe] = signal
+                
+                # Collect recent breaks
+                breaks = sr_data.get("key_level_breaks", [])
+                for break_info in breaks:
+                    break_info["timeframe"] = tf_result.timeframe
+                    sr_summary["recent_breaks"].append(break_info)
+        
+        # Sort recent breaks by significance
+        sr_summary["recent_breaks"].sort(key=lambda x: x.get("significance", 0), reverse=True)
+        sr_summary["recent_breaks"] = sr_summary["recent_breaks"][:5]  # Top 5 most significant
+        
+        summary["support_resistance_summary"] = sr_summary
         
         return summary
     
